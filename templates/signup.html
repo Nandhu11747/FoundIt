@@ -1,0 +1,449 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sign Up | FoundIt</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/signup.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="signup-page">
+
+        <!-- =========================
+             LEFT PANEL
+        ========================== -->
+
+        <section class="signup-left">
+
+            <a href="/" class="signup-logo">
+
+                <span class="logo-icon">⌕</span>
+
+                <span>FoundIt</span>
+
+            </a>
+
+
+            <div class="left-content">
+
+                <h1>
+                    Join the network of
+                    <span>recovery heroes.</span>
+                </h1>
+
+
+                <p class="left-description">
+
+                    Create your secure account to start tracking
+                    lost items and contributing to our
+                    community-led recovery efforts.
+
+                </p>
+
+
+                <div class="benefits">
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <h3>
+                                BIOMETRIC VERIFICATION
+                            </h3>
+
+                            <p>
+                                Secure your claims with advanced
+                                identity verification protocols.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ⚡
+                        </div>
+
+                        <div>
+                            <h3>
+                                REAL-TIME ALERTS
+                            </h3>
+
+                            <p>
+                                Get notified immediately when a
+                                high-probability match is detected.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ◉
+                        </div>
+
+                        <div>
+                            <h3>
+                                PRIVACY SHIELD
+                            </h3>
+
+                            <p>
+                                Your personal data is encrypted and
+                                never shared without consent.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="signup-illustration">
+
+                    <img
+                        src="{% static 'images/signup-illustration.png' %}"
+                        alt="FoundIt recovery illustration"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="left-footer">
+                FoundIt • Secure Lost & Found Recovery
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RIGHT PANEL
+        ========================== -->
+
+        <section class="signup-right">
+
+            <div class="signup-container">
+
+                <div class="signup-heading">
+
+                    <h2>
+                        Create Account
+                    </h2>
+
+                    <p>
+                        Start your journey toward secure item
+                        management today.
+                    </p>
+
+                </div>
+
+
+                <!-- =========================
+                     SIGNUP FORM
+                ========================== -->
+
+                <form id="signupForm">
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="fullName">
+                                FULL NAME
+                            </label>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                name="full_name"
+                                placeholder="John Doe"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="phone">
+                                PHONE NUMBER
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="+1 (555) 000-0000"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            WORK EMAIL ADDRESS
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="john@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="password-label">
+
+                            <label for="password">
+                                PASSWORD
+                            </label>
+
+
+                        </div>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="••••••••••••"
+                            required
+                        >
+
+                        <small>
+                            Use 8+ characters with a mix of letters,
+                            numbers and symbols.
+                        </small>
+
+                    </div>
+
+
+                    <div class="terms">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                        >
+
+                        <label for="terms">
+
+                            I agree to the
+                            <a href="#">Terms of Service</a>
+                            and
+                            <a href="#">Privacy Policy</a>.
+
+                        </label>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="create-account-btn"
+                    >
+                        Create Account
+                        <span>→</span>
+                    </button>
+
+
+                    <p
+                        id="signupMessage"
+                        class="signup-message"
+                    ></p>
+
+                </form>
+
+
+                <div class="login-link">
+
+                    Already have an account?
+
+                    <a href="{% url 'login-page' %}">
+                        Log in here
+                    </a>
+
+                </div>
+
+
+                <div class="signup-footer">
+
+                    <span>SUPPORT</span>
+                    <span>LEGAL</span>
+                    <span>PRIVACY</span>
+                    <span>SECURITY</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- =========================
+         OTP MODAL
+    ========================== -->
+
+    <div
+        id="otpModal"
+        class="otp-overlay"
+    >
+
+        <div class="otp-modal">
+
+            <button
+                type="button"
+                id="closeOtp"
+                class="close-otp"
+            >
+                ×
+            </button>
+
+
+            <div class="otp-logo">
+
+                <span>⌕</span>
+
+                <strong>
+                    FoundIt
+                </strong>
+
+            </div>
+
+
+            <h2>
+                Enter your OTP
+            </h2>
+
+
+            <p class="otp-description">
+
+                OTP has been sent to your email
+
+            </p>
+
+
+            <div
+                id="otpInputs"
+                class="otp-inputs"
+            >
+
+                <input
+                    type="text"
+                    maxlength="1"
+                    inputmode="numeric"
+                    class="otp-input"
+                >
+
+                <input
+                    type="text"
+                    maxlength="1"
+                    inputmode="numeric"
+                    class="otp-input"
+                >
+
+                <input
+                    type="text"
+                    maxlength="1"
+                    inputmode="numeric"
+                    class="otp-input"
+                >
+
+                <input
+                    type="text"
+                    maxlength="1"
+                    inputmode="numeric"
+                    class="otp-input"
+                >
+
+                <input
+                    type="text"
+                    maxlength="1"
+                    inputmode="numeric"
+                    class="otp-input"
+                >
+
+                <input
+                    type="text"
+                    maxlength="1"
+                    inputmode="numeric"
+                    class="otp-input"
+                >
+
+            </div>
+
+
+            <div class="otp-resend">
+
+                Didn't receive a code?
+
+                <button
+                    type="button"
+                    id="resendOtp"
+                >
+                    Resend OTP
+                </button>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="verifyOtpBtn"
+                class="verify-otp-btn"
+            >
+                Verify OTP
+            </button>
+
+
+            <p
+                id="otpMessage"
+                class="otp-message"
+            ></p>
+
+        </div>
+
+    </div>
+
+
+    <script src="{% static 'js/signup.js' %}"></script>
+
+</body>
+
+</html>

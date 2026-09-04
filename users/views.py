@@ -1,3 +1,4 @@
+from rest_framework.authentication import SessionAuthentication
 from datetime import timedelta
 
 from django.contrib.auth.hashers import make_password
@@ -167,6 +168,10 @@ class LoginView(APIView):
 
 class GoogleLoginSuccessView(APIView):
 
+    authentication_classes = [
+        SessionAuthentication
+    ]
+
     def get(self, request):
 
         if not request.user.is_authenticated:
@@ -191,6 +196,26 @@ class GoogleLoginSuccessView(APIView):
                     "full_name": user.full_name,
                     "email": user.email,
                 }
+            },
+            status=status.HTTP_200_OK
+        )
+
+class UserMeView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        user = request.user
+
+        return Response(
+            {
+                "id": user.id,
+                "full_name": user.full_name,
+                "email": user.email,
+                "phone": user.phone,
+                "location": user.location,
+                "profile_photo": user.profile_photo,
             },
             status=status.HTTP_200_OK
         )

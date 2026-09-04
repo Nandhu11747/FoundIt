@@ -1,0 +1,452 @@
+{% load static socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <main class="login-page">
+
+        <!-- =========================
+             LEFT BRANDING SECTION
+        ========================== -->
+
+        <section class="brand-panel">
+
+            <div class="brand-content">
+
+                <!-- Logo -->
+
+                <a href="/" class="brand-logo">
+                    <span class="logo-icon">⌕</span>
+                    <span>FoundIt</span>
+                </a>
+
+
+                <!-- Welcome message -->
+
+                <div class="brand-message">
+
+                    <h1>
+                        Welcome Back to
+                        <span>FoundIt.</span>
+                    </h1>
+
+                    <p>
+                        Your central hub for reporting, tracking,
+                        and reclaiming what matters most. Our intelligent
+                        matching engine is working around the clock.
+                    </p>
+
+                </div>
+
+
+                <!-- Illustration -->
+
+                <div class="illustration-card">
+
+                    <div class="illustration-content">
+
+                        <div class="illustration-icon">
+                            ◇
+                        </div>
+
+                        <div class="illustration-icon small">
+                            ⌕
+                        </div>
+
+                        <div class="illustration-icon small">
+                            ◈
+                        </div>
+
+                        <div class="illustration-icon small">
+                            ⌖
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Features -->
+
+                <div class="feature-row">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            ♧
+                        </div>
+
+                        <div>
+                            <h3>Secured Claims</h3>
+
+                            <p>
+                                End-to-end verification protocols
+                                for all returned items.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            ⌕
+                        </div>
+
+                        <div>
+                            <h3>AI Matching</h3>
+
+                            <p>
+                                Visual recognition matching with
+                                intelligent accuracy.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Left footer -->
+
+                <div class="brand-footer">
+
+                    <span>
+                        © 2024 FoundIt SaaS Platform.
+                        All rights reserved.
+                    </span>
+
+                    <div>
+
+                        <a href="#">
+                            Privacy
+                        </a>
+
+                        <a href="#">
+                            Terms
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RIGHT LOGIN SECTION
+        ========================== -->
+
+        <section class="login-panel">
+
+            <div class="login-container">
+
+
+                <!-- Login heading -->
+
+                <div class="login-header">
+
+                    <h2>
+                        Sign In
+                    </h2>
+
+                    <p>
+                        Enter your credentials to access
+                        your account dashboard.
+                    </p>
+
+                </div>
+
+
+                <!-- =========================
+                     SOCIAL LOGIN
+                ========================== -->
+
+                <div class="social-login">
+
+                    <!-- Google -->
+
+                    <a
+                        href="{% provider_login_url 'google' %}"
+                        class="social-btn google-btn"
+                    >
+
+                        <span class="social-icon">
+                            G
+                        </span>
+
+                        Continue with Google
+
+                    </a>
+
+
+                    <!-- GitHub -->
+
+                    <button
+                        type="button"
+                        class="social-btn github-btn"
+                        id="githubLoginBtn"
+                    >
+
+                        <span class="social-icon">
+                            ●
+                        </span>
+
+                        Continue with GitHub
+
+                    </button>
+
+                </div>
+
+
+                <!-- Divider -->
+
+                <div class="divider">
+
+                    <span>
+                        OR CONTINUE WITH EMAIL
+                    </span>
+
+                </div>
+
+
+                <!-- =========================
+                     LOGIN FORM
+                ========================== -->
+
+                <form
+                    id="loginForm"
+                    method="post"
+                    novalidate
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="name@company.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        <div class="password-label">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <a href="#">
+                                Forgot password?
+                            </a>
+
+                        </div>
+
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="••••••••••••"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="password-toggle"
+                                aria-label="Show password"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Remember me -->
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                            name="remember_me"
+                        >
+
+                        <span>
+                            Keep me signed in for 30 days
+                        </span>
+
+                    </label>
+
+
+                    <!-- Login button -->
+
+                    <button
+                        type="submit"
+                        class="login-btn"
+                        id="loginButton"
+                    >
+
+                        <span>
+                            Sign In to Dashboard
+                        </span>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- API message -->
+
+                <p
+                    id="loginMessage"
+                    class="login-message"
+                    role="alert"
+                ></p>
+
+
+                <!-- =========================
+                     SIGN UP
+                ========================== -->
+
+                <p class="signup-text">
+
+                    Don't have an account yet?
+
+                    <a href="/signup/">
+                        Create free account
+                    </a>
+
+                </p>
+
+
+                <!-- =========================
+                     TRUST BOX
+                ========================== -->
+
+                <div class="trust-box">
+
+                    <div class="trust-icon">
+                        ⓘ
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Trusted by Global Facilities
+                        </h3>
+
+                        <p>
+                            Join over 1,200 organizations including
+                            airports, stadiums, and hotels managing
+                            their lost and found with enterprise-grade
+                            security.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SECURITY INFORMATION
+                ========================== -->
+
+                <div class="security-info">
+
+                    <span>
+                        ♢ 256-BIT AES
+                    </span>
+
+                    <span>
+                        ♙ VERIFIED AUTH
+                    </span>
+
+                </div>
+
+
+                <!-- System status -->
+
+                <div class="system-status">
+
+                    <span class="status-dot"></span>
+
+                    FOUNDIT CLOUD:
+                    ALL SYSTEMS OPERATIONAL
+
+                </div>
+
+
+                <!-- Footer -->
+
+                <footer class="login-footer">
+
+                    <a href="#">
+                        PRIVACY POLICY
+                    </a>
+
+                    <a href="#">
+                        TERMS OF SERVICE
+                    </a>
+
+                    <a href="#">
+                        HELP CENTER
+                    </a>
+
+                </footer>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JavaScript -->
+
+    <script src="{% static 'js/login.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,463 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FoundIt | Reconnect Lost Items</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/landing.css' %}"
+    >
+</head>
+
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="navbar">
+
+        <a href="/" class="brand-logo">
+
+            <span class="logo-icon">⌕</span>
+
+            <span class="logo-text">
+                FoundIt
+            </span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#browse">
+                Browse Items
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="{% url 'login-page' %}"
+                class="sign-in-link"
+            >
+                Sign In
+            </a>
+
+           <a
+                href="{% url 'signup-page' %}"
+                class="get-started-btn"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    SMART LOST & FOUND PLATFORM
+                </span>
+
+
+                <h1>
+                    Reconnecting
+                    <span>Lost Items</span>
+                    With Their Owners.
+                </h1>
+
+
+                <p class="hero-description">
+
+                    FoundIt is a centralized platform that makes
+                    reporting, discovering, and reclaiming lost
+                    items simple and secure.
+
+                    Our intelligent matching system helps connect
+                    lost and found reports faster.
+
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="#get-started"
+                        class="primary-btn"
+                    >
+                        Report Lost Item
+                        <span>→</span>
+                    </a>
+
+
+                    <a
+                        href="#browse"
+                        class="secondary-btn"
+                    >
+                        Found an Item?
+                    </a>
+
+                </div>
+
+
+                <div class="hero-trust">
+
+                    <span>
+                        ✓ VERIFIED PLATFORM
+                    </span>
+
+                    <span>
+                        ✓ SECURE CLAIMS
+                    </span>
+
+                    <span>
+                        ✓ AI MATCHING
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO IMAGE -->
+
+            <div class="hero-image">
+
+                <div class="hero-image-card">
+
+                    <img
+                        src="{% static 'images/hero.png' %}"
+                        alt="Lost and found item illustration"
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================== -->
+
+        <section class="statistics">
+
+            <div class="stat-card">
+
+                <strong>1.2M+</strong>
+
+                <span>
+                    Items Reported
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>98.4%</strong>
+
+                <span>
+                    Match Accuracy
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>5,000+</strong>
+
+                <span>
+                    Items Recovered
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <strong>250k+</strong>
+
+                <span>
+                    Active Users
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RECOVERY FLOW
+        ========================== -->
+
+        <section
+            class="recovery-section"
+            id="how-it-works"
+        >
+
+            <div class="section-heading">
+
+                <span>
+                    HOW IT WORKS
+                </span>
+
+                <h2>
+                    Simple & Secure Recovery Flow
+                </h2>
+
+                <p>
+                    Our streamlined recovery process makes it easy
+                    to report, match, verify, and return lost items.
+                </p>
+
+            </div>
+
+
+            <div class="flow-cards">
+
+
+                <!-- STEP 1 -->
+
+                <article class="flow-card">
+
+                    <div class="flow-image">
+
+                        <img
+                            src="{% static 'images/lost.png' %}"
+                            alt="Report lost item"
+                        >
+
+                    </div>
+
+
+                    <span class="step-number">
+                        01
+                    </span>
+
+
+                    <h3>
+                        Report Your Lost Item
+                    </h3>
+
+
+                    <p>
+                        Provide details about your lost item,
+                        including its location, date, category,
+                        and description.
+                    </p>
+
+                </article>
+
+
+                <!-- STEP 2 -->
+
+                <article class="flow-card">
+
+                    <div class="flow-image">
+
+                        <img
+                            src="{% static 'images/matching.png' %}"
+                            alt="Intelligent matching"
+                        >
+
+                    </div>
+
+
+                    <span class="step-number">
+                        02
+                    </span>
+
+
+                    <h3>
+                        Intelligent Matching
+                    </h3>
+
+
+                    <p>
+                        FoundIt compares lost and found reports
+                        to identify potential matches.
+                    </p>
+
+                </article>
+
+
+                <!-- STEP 3 -->
+
+                <article class="flow-card">
+
+                    <div class="flow-image">
+
+                        <img
+                            src="{% static 'images/verification.png' %}"
+                            alt="Safe verification and return"
+                        >
+
+                    </div>
+
+
+                    <span class="step-number">
+                        03
+                    </span>
+
+
+                    <h3>
+                        Safe Verification & Return
+                    </h3>
+
+
+                    <p>
+                        Verify ownership securely and complete
+                        the return process with confidence.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CTA
+        ========================== -->
+
+        <section
+            class="cta-section"
+            id="get-started"
+        >
+
+            <h2>
+                Ready to reconnect with what matters?
+            </h2>
+
+
+            <p>
+                Join individuals and organizations using FoundIt
+                to make lost and found recovery faster and safer.
+            </p>
+
+
+            <a
+                href="{% url 'signup-page' %}"
+                class="cta-button"
+            >
+                Create Free Account
+                <span>→</span>
+            </a>
+
+
+            <div class="cta-security">
+
+                <span>
+                    🔒 Enterprise Security
+                </span>
+
+                <span>
+                    ✓ 256-BIT Encryption
+                </span>
+
+                <span>
+                    ✓ Verified Support
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+        <div class="footer-brand">
+
+            <a href="/" class="brand-logo">
+
+                <span class="logo-icon">
+                    ⌕
+                </span>
+
+                <span class="logo-text">
+                    FoundIt
+                </span>
+
+            </a>
+
+            <p>
+                Smart, secure lost and found recovery.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#">
+                Explore
+            </a>
+
+            <a href="#">
+                Privacy
+            </a>
+
+            <a href="#">
+                Terms
+            </a>
+
+            <a href="#">
+                Contact
+            </a>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2024 FoundIt SaaS Platform.
+                All rights reserved.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

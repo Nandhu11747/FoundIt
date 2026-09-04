@@ -1,0 +1,653 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <div class="logo-mark">⌕</div>
+                <span>FoundIt</span>
+            </div>
+
+
+            <!-- Main Navigation -->
+            <nav class="sidebar-nav">
+
+                <p class="nav-label">MENU</p>
+
+                <a href="#" class="nav-item active">
+                    <span class="nav-icon">⊞</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⌕</span>
+                    <span>Browse Items</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♧</span>
+                    <span>My Claim</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♧</span>
+                    <span>Notification</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">◎</span>
+                    <span>Profile</span>
+                </a>
+
+            </nav>
+
+
+            <!-- Bottom Navigation -->
+            <div class="sidebar-bottom">
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+                <a href="#" class="nav-item logout">
+                    <span class="nav-icon">↪</span>
+                    <span>Sign Out</span>
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+
+            <!-- Top Header -->
+
+            <header class="top-header">
+
+                <div class="breadcrumb">
+                    <span>Dashboard</span>
+                    <span class="breadcrumb-arrow">›</span>
+                    <strong>Overview</strong>
+                </div>
+
+
+                <div class="header-right">
+
+                    <div class="search-box">
+
+                        <span class="search-icon">⌕</span>
+
+                        <input
+                            type="text"
+                            placeholder="Search items, claims..."
+                        >
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar" id="userAvatar">
+                            U
+                        </div>
+
+                        <div class="user-details">
+                            <strong id="userName">User</strong>
+                            <span>Active Member</span>
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= PAGE CONTENT ================= -->
+
+            <div class="page-content">
+
+
+                <!-- Welcome -->
+
+                <section class="welcome-section">
+
+                    <div class="welcome-text">
+
+                        <h1 id="welcomeMessage">
+                            Welcome back!
+                        </h1>
+
+                        <p>
+                            You have
+                            <strong>2 active matches</strong>
+                            requiring your attention today.
+                        </p>
+
+                    </div>
+
+
+                    <div class="welcome-actions">
+
+                        <button class="btn btn-outline">
+                            <span>+</span>
+                            Report Found Item
+                        </button>
+
+                        <button class="btn btn-dark">
+                            <span>+</span>
+                            Report Lost Item
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= STATS ================= -->
+
+                <section class="stats-grid">
+
+
+                    <!-- Active Reports -->
+
+                    <div class="stat-card active-stat">
+
+                        <div class="stat-content">
+
+                            <span class="stat-title">
+                                ACTIVE REPORTS
+                            </span>
+
+                            <strong class="stat-number">
+                                4
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-icon purple">
+                            ▤
+                        </div>
+
+                    </div>
+
+
+                    <!-- Items Found -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-content">
+
+                            <span class="stat-title">
+                                ITEMS FOUND
+                            </span>
+
+                            <strong class="stat-number">
+                                12
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-icon teal">
+                            ◉
+                        </div>
+
+                    </div>
+
+
+                    <!-- Resolved Cases -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-content">
+
+                            <span class="stat-title">
+                                RESOLVED CASES
+                            </span>
+
+                            <strong class="stat-number">
+                                38
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-icon blue">
+                            ✓
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= MATCH ALERT ================= -->
+
+                <section class="match-card">
+
+                    <div class="match-top">
+
+                        <span class="confidence-badge">
+                            HIGH CONFIDENCE MATCH
+                        </span>
+
+                        <span class="match-time">
+                            Identified 45m ago
+                        </span>
+
+                    </div>
+
+
+                    <div class="match-body">
+
+                        <div class="match-information">
+
+                            <h2>
+                                We found a potential match for
+                                your "Brown Leather Wallet"!
+                            </h2>
+
+                            <p>
+                                A user recently reported finding a similar
+                                item near Central Park Food Court.
+                                The AI confidence score for this match is
+                                <strong>91.8%</strong>.
+                            </p>
+
+
+                            <div class="match-details">
+
+                                <span>
+                                    ◉ Central Park Food Court
+                                </span>
+
+                                <span>
+                                    ● Found 45m ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="match-actions">
+
+                            <button class="match-dismiss">
+                                Not Mine
+                            </button>
+
+                            <button class="match-view">
+                                View &amp; Verify Match
+                                <span>→</span>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= LOWER GRID ================= -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- RECENT ACTIVITY -->
+
+                    <section class="activity-section">
+
+                        <div class="section-heading">
+
+                            <div>
+                                <h2>Recent Activity</h2>
+                                <p>Your latest report activity</p>
+                            </div>
+
+                            <a href="#">
+                                View History
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+
+                        <div class="activity-table">
+
+                            <!-- Table Header -->
+
+                            <div class="activity-row table-header">
+
+                                <span>REPORT ID</span>
+                                <span>ITEM &amp; DESCRIPTION</span>
+                                <span>TYPE</span>
+                                <span>STATUS</span>
+                                <span>MATCH SCORE</span>
+
+                            </div>
+
+
+                            <!-- Row 1 -->
+
+                            <div class="activity-row">
+
+                                <span class="report-id">
+                                    RPT-9123
+                                </span>
+
+                                <div class="item-info">
+
+                                    <strong>
+                                        MacBook Pro 14"
+                                    </strong>
+
+                                    <small>
+                                        Lost • Tech Item
+                                    </small>
+
+                                </div>
+
+                                <span class="type lost">
+                                    LOST
+                                </span>
+
+                                <span class="status matching">
+                                    ◉ Matching
+                                </span>
+
+                                <span class="score">
+                                    85%
+                                </span>
+
+                            </div>
+
+
+                            <!-- Row 2 -->
+
+                            <div class="activity-row">
+
+                                <span class="report-id">
+                                    RPT-9108
+                                </span>
+
+                                <div class="item-info">
+
+                                    <strong>
+                                        Leather Wallet (Brown)
+                                    </strong>
+
+                                    <small>
+                                        Found • Central Park
+                                    </small>
+
+                                </div>
+
+                                <span class="type lost">
+                                    LOST
+                                </span>
+
+                                <span class="status verified">
+                                    ✓ Verified
+                                </span>
+
+                                <span class="score high">
+                                    100%
+                                </span>
+
+                            </div>
+
+
+                            <!-- Row 3 -->
+
+                            <div class="activity-row">
+
+                                <span class="report-id">
+                                    RPT-9084
+                                </span>
+
+                                <div class="item-info">
+
+                                    <strong>
+                                        Silver Car Keys
+                                    </strong>
+
+                                    <small>
+                                        Lost • Parking Lot P3
+                                    </small>
+
+                                </div>
+
+                                <span class="type found">
+                                    FOUND
+                                </span>
+
+                                <span class="status reviewing">
+                                    ◉ Reviewing
+                                </span>
+
+                                <span class="score high">
+                                    94%
+                                </span>
+
+                            </div>
+
+
+                            <!-- Row 4 -->
+
+                            <div class="activity-row">
+
+                                <span class="report-id">
+                                    RPT-9061
+                                </span>
+
+                                <div class="item-info">
+
+                                    <strong>
+                                        AirPods Pro Gen 2
+                                    </strong>
+
+                                    <small>
+                                        Lost • Tech Item
+                                    </small>
+
+                                </div>
+
+                                <span class="type lost">
+                                    LOST
+                                </span>
+
+                                <span class="status pending">
+                                    ◉ Pending
+                                </span>
+
+                                <span class="score low">
+                                    42%
+                                </span>
+
+                            </div>
+
+
+                            <!-- Row 5 -->
+
+                            <div class="activity-row">
+
+                                <span class="report-id">
+                                    RPT-9052
+                                </span>
+
+                                <div class="item-info">
+
+                                    <strong>
+                                        Ray-Ban Sunglasses
+                                    </strong>
+
+                                    <small>
+                                        Lost • Personal Item
+                                    </small>
+
+                                </div>
+
+                                <span class="type found">
+                                    FOUND
+                                </span>
+
+                                <span class="status resolved">
+                                    ✓ Resolved
+                                </span>
+
+                                <span class="score high">
+                                    100%
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ================= RIGHT COLUMN ================= -->
+
+                    <aside class="right-column">
+
+
+                        <!-- System Integrity -->
+
+                        <section class="info-card">
+
+                            <h2>System Integrity</h2>
+
+                            <p class="info-subtitle">
+                                Keeping your data secure
+                            </p>
+
+
+                            <div class="integrity-item">
+
+                                <div class="integrity-icon">
+                                    ✓
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Verified Claims
+                                    </strong>
+
+                                    <p>
+                                        Every claim is reviewed
+                                        before approval.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="integrity-item">
+
+                                <div class="integrity-icon">
+                                    ✦
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        AI Auto-Matching
+                                    </strong>
+
+                                    <p>
+                                        Our matching engine regularly
+                                        scans for new potential matches.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- Help Center -->
+
+                        <section class="help-card">
+
+                            <div class="help-content">
+
+                                <h2>
+                                    Help Center
+                                </h2>
+
+                                <p>
+                                    Questions about submitting reports,
+                                    verification or claiming?
+                                </p>
+
+                                <button>
+                                    Get Support
+                                </button>
+
+                            </div>
+
+                        </section>
+
+
+                        <!-- Pro Tip -->
+
+                        <section class="tip-card">
+
+                            <div class="tip-icon">
+                                💡
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Pro Tip
+                                </strong>
+
+                                <p>
+                                    Adding detailed photos of your item
+                                    can increase verification speed
+                                    by up to 2.5x.
+                                </p>
+
+                            </div>
+
+                        </section>
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+
+</html>
