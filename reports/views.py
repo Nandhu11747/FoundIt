@@ -23,6 +23,21 @@ class CreateReportView(APIView):
                 user=request.user
             )
 
+            private_details = request.data.get(
+                "private_identification_details"
+            )
+
+            if private_details:
+                report.private_identification_details = (
+                    private_details
+                )
+                report.save(
+                    update_fields=[
+                        "private_identification_details",
+                        "updated_at",
+                    ]
+                )
+
             return Response(
                 ReportSerializer(report).data,
                 status=status.HTTP_201_CREATED

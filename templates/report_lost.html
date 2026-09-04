@@ -366,6 +366,110 @@
           </aside>
         </section>
 
+        <!-- STEP 4 -->
+
+        <section class="report-content" id="step4" style="display: none">
+          <div class="form-card">
+            <div class="card-heading">
+              <h2>Review & Confirm</h2>
+
+              <p>
+                Please review your information before submitting your lost item
+                report.
+              </p>
+            </div>
+
+            <div class="review-section">
+              <h3>Item Details</h3>
+
+              <div class="review-row">
+                <span>Item Name</span>
+                <strong id="reviewItemName">—</strong>
+              </div>
+
+              <div class="review-row">
+                <span>Category</span>
+                <strong id="reviewCategory">—</strong>
+              </div>
+
+              <div class="review-row">
+                <span>Reward</span>
+                <strong id="reviewReward">—</strong>
+              </div>
+
+              <div class="review-row">
+                <span>Description</span>
+                <strong id="reviewDescription">—</strong>
+              </div>
+            </div>
+
+            <div class="review-section">
+              <h3>Location & Time</h3>
+
+              <div class="review-row">
+                <span>Location</span>
+                <strong id="reviewLocation">—</strong>
+              </div>
+
+              <div class="review-row">
+                <span>Date</span>
+                <strong id="reviewDate">—</strong>
+              </div>
+
+              <div class="review-row">
+                <span>Time</span>
+                <strong id="reviewTime">—</strong>
+              </div>
+            </div>
+
+            <div class="review-section">
+              <h3>Private Details</h3>
+
+              <div class="private-review">
+                🔒 Private identification details added
+              </div>
+            </div>
+
+            <div class="privacy-box">
+              <strong>Before you submit</strong>
+
+              <p>
+                Make sure the information above is accurate. Your report will be
+                used by FoundIt's matching system to identify potential found
+                items.
+              </p>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="next-btn" id="step4PreviousBtn">
+                ← Previous Step
+              </button>
+
+              <button type="button" class="next-btn" id="submitLostReportBtn">
+                Submit Report
+              </button>
+            </div>
+
+            <p id="reportMessage"></p>
+          </div>
+
+          <aside class="info-card">
+            <div class="info-image">
+              <img
+                src="{% static 'images/safe-verification.png' %}"
+                alt="Review report"
+              />
+            </div>
+
+            <h3>Ready to Submit?</h3>
+
+            <p>
+              Once submitted, our system will securely store your report and
+              begin looking for potential matches.
+            </p>
+          </aside>
+        </section>
+
         <!-- BOTTOM FEATURES -->
 
         <section class="report-features">
