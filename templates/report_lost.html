@@ -1,0 +1,398 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Report Lost Item | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/report.css' %}" />
+  </head>
+
+  <body>
+    <div class="report-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">⌕</div>
+          <span>FoundIt</span>
+        </div>
+
+        <div class="menu-title">MENU</div>
+
+        <a href="/dashboard/" class="menu-item"> ▦ Dashboard </a>
+
+        <a href="#" class="menu-item"> ◇ Browse Items </a>
+
+        <a href="#" class="menu-item"> ♧ My Claim </a>
+
+        <a href="#" class="menu-item"> ♢ Notification </a>
+
+        <a href="#" class="menu-item"> ◯ Profile </a>
+
+        <div class="sidebar-bottom">
+          <a href="#" class="menu-item"> ⚙ Settings </a>
+
+          <a href="/login/" class="menu-item logout"> ↪ Sign Out </a>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="report-main">
+        <!-- TOP BAR -->
+
+        <div class="top-bar">
+          <div class="breadcrumb">
+            Dashboard
+            <span>›</span>
+            Report Lost Item
+          </div>
+
+          <div class="top-user">
+            <div class="user-avatar">N</div>
+
+            <div>
+              <strong id="userName">User</strong>
+              <small>Active Member</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE HEADING -->
+
+        <section class="report-heading">
+          <h1>Report a Lost Item</h1>
+
+          <p>
+            Follow the steps below to report your missing property. Our advanced
+            matching system will notify you when we find a potential match.
+          </p>
+        </section>
+
+        <!-- STEPPER -->
+
+        <div class="stepper">
+          <div class="step active">
+            <div class="step-number">1</div>
+            <span>Item Details</span>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <span>Location & Time</span>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <span>Release/Private Details</span>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <span>Review & Confirm</span>
+          </div>
+        </div>
+
+        <!-- STEP 1 -->
+
+        <section class="report-content">
+          <div class="form-card">
+            <div class="card-heading">
+              <h2>Item Classification</h2>
+
+              <p>What item are you looking for? Be as specific as possible.</p>
+            </div>
+
+            <form id="lostReportForm">
+              <!-- ITEM NAME -->
+
+              <div class="form-group">
+                <label for="itemName"> Item Name </label>
+
+                <input
+                  type="text"
+                  id="itemName"
+                  placeholder="e.g. iPhone 15 Pro, Black Leather Wallet"
+                  required
+                />
+              </div>
+
+              <!-- CATEGORY + REWARD -->
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="category"> Category </label>
+
+                  <select id="category" required>
+                    <option value="">Select category</option>
+
+                    <option value="Electronics">Electronics</option>
+
+                    <option value="Personal Item">Personal Item</option>
+
+                    <option value="Documents">Documents</option>
+
+                    <option value="Keys">Keys</option>
+
+                    <option value="Clothing">Clothing</option>
+
+                    <option value="Accessories">Accessories</option>
+
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="reward"> Offer Reward? </label>
+
+                  <select id="reward">
+                    <option value="0">No, thanks</option>
+
+                    <option value="500">₹500</option>
+
+                    <option value="1000">₹1,000</option>
+
+                    <option value="2000">₹2,000</option>
+
+                    <option value="5000">₹5,000</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- DESCRIPTION -->
+
+              <div class="form-group">
+                <label for="description"> Detailed Description </label>
+
+                <textarea
+                  id="description"
+                  rows="5"
+                  maxlength="1000"
+                  placeholder="Describe unique markings, scratches, stickers, or internal contents (for bag/wallets)..."
+                  required
+                ></textarea>
+
+                <div class="character-count">0 / 1000 characters</div>
+              </div>
+
+              <!-- TAGS -->
+
+              <div class="form-group">
+                <label for="tags"> Keywords & Tags </label>
+
+                <div class="tag-input">
+                  <input
+                    type="text"
+                    id="tags"
+                    placeholder="Add tags like 'black', 'leather', 'sticker'"
+                  />
+
+                  <button type="button" id="addTagBtn">Add</button>
+                </div>
+
+                <div id="tagContainer" class="tag-container"></div>
+              </div>
+
+              <!-- BUTTON -->
+
+              <div class="form-actions">
+                <button type="button" class="next-btn" id="nextStepBtn">
+                  Next Step →
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RIGHT INFORMATION CARD -->
+
+          <aside class="info-card">
+            <div class="info-image">
+              <img
+                src="{% static 'images/item details in lost report.png' %}"
+                alt="Item details"
+              />
+            </div>
+
+            <h3>Item Details</h3>
+
+            <p>
+              Start by identifying the item. Accurate categorization helps our
+              AI matching system achieve higher accuracy.
+            </p>
+
+            <div class="info-divider"></div>
+
+            <div class="info-feature">
+              ✓
+              <span>Trust Protocol</span>
+            </div>
+
+            <div class="info-feature">
+              ✦
+              <span>AI Matching</span>
+            </div>
+          </aside>
+        </section>
+
+        <!-- STEP 2 -->
+
+        <section class="report-content" id="step2" style="display: none">
+          <div class="form-card">
+            <div class="card-heading">
+              <h2>Location & Time</h2>
+
+              <p>Tell us where and when you last had the item.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="location"> Where did you lose it? </label>
+
+              <input
+                type="text"
+                id="location"
+                placeholder="e.g. College Cafeteria"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="eventDate"> Date </label>
+
+                <input type="date" id="eventDate" required />
+              </div>
+
+              <div class="form-group">
+                <label for="eventTime"> Approximate Time </label>
+
+                <input type="time" id="eventTime" />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="next-btn" id="previousStepBtn">
+                ← Previous Step
+              </button>
+
+              <button type="button" class="next-btn" id="locationNextBtn">
+                Next Step →
+              </button>
+            </div>
+          </div>
+
+          <aside class="info-card">
+            <div class="info-image">
+              <img
+                src="{% static 'images/report-item.png' %}"
+                alt="Location details"
+              />
+            </div>
+
+            <h3>Location & Time</h3>
+
+            <p>
+              Accurate location and timing help FoundIt identify potential
+              matches more effectively.
+            </p>
+          </aside>
+        </section>
+
+        <!-- STEP 3 -->
+
+        <section class="report-content" id="step3" style="display: none">
+          <div class="form-card">
+            <div class="card-heading">
+              <h2>Release / Private Details</h2>
+
+              <p>
+                Add information that only the genuine owner would know. This
+                information will remain private.
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label for="privateDetails">
+                Private Identification Details
+              </label>
+
+              <textarea
+                id="privateDetails"
+                rows="6"
+                placeholder="Example: There is a small scratch near the camera, and a blue sticker inside the phone case."
+              ></textarea>
+
+              <p class="field-help">
+                Do not enter information that is already visible in your public
+                description.
+              </p>
+            </div>
+
+            <div class="privacy-box">
+              <strong>🔒 Your information is protected</strong>
+
+              <p>
+                These details will not be shown to other users. They may be used
+                during ownership verification if a potential match is found.
+              </p>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="next-btn" id="step3PreviousBtn">
+                ← Previous Step
+              </button>
+
+              <button type="button" class="next-btn" id="step3NextBtn">
+                Next Step →
+              </button>
+            </div>
+          </div>
+
+          <aside class="info-card">
+            <div class="info-image">
+              <img
+                src="{% static 'images/safe-verification.png' %}"
+                alt="Safe verification"
+              />
+            </div>
+
+            <h3>Safe Verification</h3>
+
+            <p>
+              Private details help us verify ownership without revealing
+              sensitive information to potential claimants.
+            </p>
+          </aside>
+        </section>
+
+        <!-- BOTTOM FEATURES -->
+
+        <section class="report-features">
+          <div>
+            <strong>◉ Ownership Verification</strong>
+            <p>
+              We may require answers to specific questions before a match is
+              finalized.
+            </p>
+          </div>
+
+          <div>
+            <strong>◉ Real-time Notifications</strong>
+            <p>
+              As soon as a possible match enters our system, you'll receive an
+              alert.
+            </p>
+          </div>
+
+          <div>
+            <strong>◉ Security & Privacy</strong>
+            <p>Your personal identity and contact details remain private.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="{% static 'js/report_lost.js' %}"></script>
+  </body>
+</html>

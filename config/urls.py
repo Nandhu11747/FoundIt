@@ -52,4 +52,10 @@ urlpatterns = [
     ),
     path("auth/", include("users.urls")),
     path("accounts/", include("allauth.urls")),
+
+    path(
+        "reports/",
+        include("reports.urls")
+    ),
+
 ]
