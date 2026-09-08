@@ -457,7 +457,15 @@
 
     </footer>
 
+<script>
+    const accessToken =
+        localStorage.getItem("access_token") ||
+        sessionStorage.getItem("access_token");
 
+    if (accessToken) {
+        window.location.href = "/dashboard/";
+    }
+</script>
 </body>
 
 </html>

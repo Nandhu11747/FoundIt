@@ -1,0 +1,648 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Report Found Item | FoundIt</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/report.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="report-layout">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ⌕
+            </div>
+
+            <span>
+                FoundIt
+            </span>
+
+        </div>
+
+
+        <div class="menu-title">
+            MENU
+        </div>
+
+
+        <a
+            href="/dashboard/"
+            class="menu-item"
+        >
+            ▦ Dashboard
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            ◇ Browse Items
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            ♧ My Claim
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            ♢ Notification
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-item"
+        >
+            ◯ Profile
+        </a>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="#"
+                class="menu-item"
+            >
+                ⚙ Settings
+            </a>
+
+
+            <a
+                href="/login/"
+                class="menu-item logout"
+            >
+                ↪ Sign Out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="report-main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="top-bar">
+
+            <div class="breadcrumb">
+
+                Dashboard
+
+                <span>
+                    ›
+                </span>
+
+                Overview
+
+            </div>
+
+
+            <div class="top-user">
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+
+                <div>
+
+                    <strong id="userName">
+                        User
+                    </strong>
+
+                    <small>
+                        Active Member
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PAGE HEADING
+        ========================== -->
+
+        <section class="report-heading">
+
+            <h1>
+                Report a Found Item
+            </h1>
+
+
+            <p>
+                Help reunite someone with their lost property.
+                Fill in the details below to start the matching process.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             STEPPER
+        ========================== -->
+
+        <div class="stepper">
+
+
+            <div class="step active">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <span>
+                    ITEM INFO
+                </span>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <span>
+                    LOCATION
+                </span>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <span>
+                    EVIDENCE
+                </span>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    4
+                </div>
+
+                <span>
+                    REVIEW
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             STEP 1
+        ========================== -->
+
+        <section class="report-content">
+
+
+            <!-- FORM CARD -->
+
+            <div class="form-card">
+
+
+                <div class="card-heading">
+
+                    <h2>
+                        Tell us what you found
+                    </h2>
+
+
+                    <p>
+                        Accurate details help us match this item
+                        with its rightful owner faster.
+                    </p>
+
+                </div>
+
+
+
+                <form id="foundReportForm">
+
+
+                    <!-- ITEM NAME + CATEGORY -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="foundItemName">
+                                ITEM NAME
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="foundItemName"
+                                placeholder="e.g. Blue North Face Backpack"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="foundCategory">
+                                CATEGORY
+                            </label>
+
+
+                            <select
+                                id="foundCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+
+                                <option value="Electronics">
+                                    Electronics
+                                </option>
+
+
+                                <option value="Personal Item">
+                                    Personal Item
+                                </option>
+
+
+                                <option value="Documents">
+                                    Documents
+                                </option>
+
+
+                                <option value="Keys">
+                                    Keys
+                                </option>
+
+
+                                <option value="Clothing">
+                                    Clothing
+                                </option>
+
+
+                                <option value="Accessories">
+                                    Accessories
+                                </option>
+
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group">
+
+                        <label for="foundDescription">
+                            DETAILED DESCRIPTION
+                        </label>
+
+
+                        <textarea
+                            id="foundDescription"
+                            rows="5"
+                            maxlength="1000"
+                            placeholder="Provide specific details: color, brand, unique markings, scratches, or contents if applicable..."
+                            required
+                        ></textarea>
+
+
+                        <div class="character-count">
+
+                            0 / 1000 characters
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BRAND + COLOR + CONDITION -->
+
+                    <div class="form-row found-details-row">
+
+
+                        <div class="form-group">
+
+                            <label for="foundBrand">
+                                BRAND (OPTIONAL)
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="foundBrand"
+                                placeholder="e.g. Apple, Nike"
+                            >
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="foundColor">
+                                COLOR
+                            </label>
+
+
+                            <select id="foundColor">
+
+                                <option value="">
+                                    Select color
+                                </option>
+
+                                <option value="Black">
+                                    Black
+                                </option>
+
+                                <option value="White">
+                                    White
+                                </option>
+
+                                <option value="Brown">
+                                    Brown
+                                </option>
+
+                                <option value="Blue">
+                                    Blue
+                                </option>
+
+                                <option value="Red">
+                                    Red
+                                </option>
+
+                                <option value="Green">
+                                    Green
+                                </option>
+
+                                <option value="Silver">
+                                    Silver
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="foundCondition">
+                                CONDITION
+                            </label>
+
+
+                            <select id="foundCondition">
+
+                                <option value="">
+                                    Select condition
+                                </option>
+
+                                <option value="New">
+                                    New
+                                </option>
+
+                                <option value="Good">
+                                    Good
+                                </option>
+
+                                <option value="Used">
+                                    Used
+                                </option>
+
+                                <option value="Damaged">
+                                    Damaged
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- NEXT BUTTON -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="button"
+                            class="next-btn"
+                            id="foundNextStepBtn"
+                        >
+                            Continue to Next Step →
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- =========================
+                 RIGHT INFORMATION CARD
+            ========================== -->
+
+            <aside class="info-card">
+
+
+                <div class="info-image">
+
+                    <img
+                        src="{% static 'images/report-item.png' %}"
+                        alt="Found item"
+                    >
+
+                </div>
+
+
+                <h3>
+                    Help Identify the Owner
+                </h3>
+
+
+                <p>
+                    Accurate information makes it easier
+                    for our system to find the person who
+                    may have lost this item.
+                </p>
+
+
+                <div class="info-divider">
+                </div>
+
+
+                <div class="info-feature">
+
+                    ✓
+
+                    <span>
+                        AI Matching
+                    </span>
+
+                </div>
+
+
+                <div class="info-feature">
+
+                    ✓
+
+                    <span>
+                        Secure Verification
+                    </span>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+
+
+        <!-- =========================
+             BOTTOM FEATURES
+        ========================== -->
+
+        <section class="report-features">
+
+
+            <div>
+
+                <strong>
+                    ◉ Secure Storage
+                </strong>
+
+
+                <p>
+                    Found items are logged in our
+                    high-security facility database.
+                </p>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ◉ AI Verification
+                </strong>
+
+
+                <p>
+                    Our computer vision system
+                    verifies image authenticity instantly.
+                </p>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ◉ Safe Handover
+                </strong>
+
+
+                <p>
+                    Verified exchanges happen at our
+                    designated safe pickup points.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/report_found.js' %}">
+</script>
+
+</body>
+
+</html>

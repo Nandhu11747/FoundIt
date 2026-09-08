@@ -16,6 +16,7 @@ from .serializers import RegisterSerializer, LoginSerializer
 from .utils import generate_otp
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import redirect
+from django.http import HttpResponse
 
 
 
@@ -186,19 +187,45 @@ class GoogleLoginSuccessView(APIView):
 
         refresh = RefreshToken.for_user(user)
 
-        return Response(
-            {
-                "message": "Google login successful",
-                "access": str(refresh.access_token),
-                "refresh": str(refresh),
-                "user": {
-                    "id": user.id,
-                    "full_name": user.full_name,
-                    "email": user.email,
-                }
-            },
-            status=status.HTTP_200_OK
-        )
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Google Login</title>
+        </head>
+        <body>
+
+        <script>
+            localStorage.setItem(
+                "access_token",
+                "{access_token}"
+            );
+
+            localStorage.setItem(
+                "refresh_token",
+                "{refresh_token}"
+            );
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify({{
+                    "id": {user.id},
+                    "full_name": "{user.full_name}",
+                    "email": "{user.email}"
+                }})
+            );
+
+            window.location.href = "/dashboard/";
+        </script>
+
+        </body>
+        </html>
+        """
+
+        return HttpResponse(html)
 
 class UserMeView(APIView):
 

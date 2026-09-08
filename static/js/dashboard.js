@@ -11,14 +11,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     try {
 
-        const response = await fetch(
+       const response = await authenticatedFetch(
             "/auth/me/",
             {
-                method: "GET",
-
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`
-                }
+                method: "GET"
             }
         );
 
@@ -67,6 +63,20 @@ document.addEventListener("DOMContentLoaded", async function () {
             error
         );
 
+    }
+
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            logout();
+        });
     }
 
 });

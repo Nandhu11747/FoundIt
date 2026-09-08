@@ -151,20 +151,7 @@ loginForm.addEventListener("submit", async function (event) {
             );
         }
 
-
-        loginMessage.textContent =
-            "Login successful!";
-
-        loginMessage.style.color =
-            "#00a99d";
-
-
-        /*
-         * Dashboard is not built yet,
-         * so don't redirect yet.
-         */
-
-    } catch (error) {
+        window.location.href = "/dashboard/";
 
         loginMessage.textContent =
             error.message;

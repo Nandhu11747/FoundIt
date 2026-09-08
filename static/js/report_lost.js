@@ -1,4 +1,10 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+    
+    const authenticated = await requireAuthentication();
+    
+    if (!authenticated) {
+        return;
+    }
 
     let currentStep = 1;
 
@@ -346,20 +352,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
             try {
 
-                const response = await fetch(
+                const response = await authenticatedFetch(
                     "/reports/",
                     {
                         method: "POST",
 
                         headers: {
-                            "Content-Type": "application/json",
-                            "Authorization":
-                                `Bearer ${token}`
-                        },
+                            "Content-Type": "application/json"
+                    },
 
-                        body: JSON.stringify(reportData)
-                    }
-                );
+                     body: JSON.stringify(reportData)
+                }
+            );
 
 
                 const data =

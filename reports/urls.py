@@ -29,4 +29,13 @@ urlpatterns = [
         name="report-lost"
     ),
 
+    path(
+        "found/",
+        TemplateView.as_view(
+            template_name="report_found.html"
+        ),
+        name="report-found"
+    ),
+
+
 ]
