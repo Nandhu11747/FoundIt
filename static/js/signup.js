@@ -22,16 +22,11 @@ const otpInputs =
     document.querySelectorAll(".otp-input");
 
 
-/* =========================
-   STORE EMAIL
-========================= */
 
 let verificationEmail = "";
 
 
-/* =========================
-   SIGNUP FORM
-========================= */
+
 
 signupForm.addEventListener(
     "submit",
@@ -116,25 +111,15 @@ signupForm.addEventListener(
             }
 
 
-            /*
-             * Registration was successful.
-             *
-             * The backend has now:
-             *
-             * 1. Generated OTP
-             * 2. Saved verification data
-             * 3. Sent OTP to email
-             */
 
             verificationEmail = email;
 
 
-            /* Show OTP modal */
-
+           
             otpModal.style.display = "flex";
 
 
-            /* Clear previous OTP */
+           
 
             otpInputs.forEach(function (input) {
                 input.value = "";
@@ -144,8 +129,7 @@ signupForm.addEventListener(
             otpMessage.textContent = "";
 
 
-            /* Focus first OTP box */
-
+           
             otpInputs[0].focus();
 
 
@@ -173,9 +157,7 @@ signupForm.addEventListener(
 );
 
 
-/* =========================
-   OTP INPUT
-========================= */
+
 
 otpInputs.forEach(
     function (input, index) {
@@ -184,9 +166,7 @@ otpInputs.forEach(
             "input",
             function () {
 
-                /*
-                 * Only allow numbers.
-                 */
+                
 
                 this.value =
                     this.value.replace(
@@ -195,11 +175,7 @@ otpInputs.forEach(
                     );
 
 
-                /*
-                 * Automatically move
-                 * to the next box.
-                 */
-
+                
                 if (
                     this.value &&
                     index < otpInputs.length - 1
@@ -216,10 +192,6 @@ otpInputs.forEach(
             "keydown",
             function (event) {
 
-                /*
-                 * Backspace moves
-                 * to previous box.
-                 */
 
                 if (
                     event.key === "Backspace" &&
@@ -237,9 +209,6 @@ otpInputs.forEach(
 );
 
 
-/* =========================
-   VERIFY OTP
-========================= */
 
 verifyOtpBtn.addEventListener(
     "click",
@@ -317,13 +286,6 @@ verifyOtpBtn.addEventListener(
                 "#00a99d";
 
 
-            /*
-             * Account has now been created.
-             *
-             * Wait briefly so the user
-             * can see the success message.
-             */
-
             setTimeout(
                 function () {
 
@@ -358,9 +320,7 @@ verifyOtpBtn.addEventListener(
 );
 
 
-/* =========================
-   CLOSE OTP MODAL
-========================= */
+
 
 closeOtp.addEventListener(
     "click",
@@ -372,9 +332,6 @@ closeOtp.addEventListener(
 );
 
 
-/* =========================
-   CLICK OUTSIDE MODAL
-========================= */
 
 otpModal.addEventListener(
     "click",
