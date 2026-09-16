@@ -75,23 +75,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class EmailVerification(models.Model):
 
-    email = models.EmailField()
-
-    otp = models.CharField(max_length=6)
-
-    full_name = models.CharField(max_length=150)
-
-    phone = models.CharField(max_length=20)
-
-    password_hash = models.CharField(max_length=128)
-
-    expires_at = models.DateTimeField()
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    is_verified = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.email
+    

@@ -44,8 +44,11 @@ loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
 
-    const email = document.getElementById("email").value.trim();
-    const password = passwordInput.value;
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        passwordInput.value;
 
     const rememberMe =
         document.getElementById("rememberMe").checked;
@@ -84,7 +87,8 @@ loginForm.addEventListener("submit", async function (event) {
         );
 
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
 
         /* =========================
@@ -106,6 +110,21 @@ loginForm.addEventListener("submit", async function (event) {
                 errorMessage =
                     data.detail;
 
+            } else if (data.email) {
+
+                errorMessage =
+                    data.email[0];
+
+            } else if (data.password) {
+
+                errorMessage =
+                    data.password[0];
+
+            } else if (data.error) {
+
+                errorMessage =
+                    data.error;
+
             }
 
             throw new Error(errorMessage);
@@ -115,6 +134,18 @@ loginForm.addEventListener("submit", async function (event) {
         /* =========================
            LOGIN SUCCESSFUL
         ========================== */
+
+        /* =========================
+            CLEAR PREVIOUS LOGIN
+        ========================= */
+
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
+
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
+        sessionStorage.removeItem("user");
 
         if (rememberMe) {
 
@@ -151,15 +182,38 @@ loginForm.addEventListener("submit", async function (event) {
             );
         }
 
-        window.location.href = "/dashboard/";
+        if (data.user.is_superuser) {
+
+            window.location.href =
+                "/admin-dashboard/";
+
+        } else {
+
+            window.location.href =
+                "/dashboard/";
+        }
+    }
+
+
+    /* =========================
+       LOGIN ERROR
+    ========================== */
+
+    catch (error) {
 
         loginMessage.textContent =
             error.message;
 
         loginMessage.style.color =
             "#dc2626";
+    }
 
-    } finally {
+
+    /* =========================
+       ENABLE BUTTON
+    ========================== */
+
+    finally {
 
         loginButton.disabled = false;
 

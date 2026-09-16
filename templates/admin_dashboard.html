@@ -1,0 +1,460 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="admin-sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-icon">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <div class="sidebar-section-title">
+            ADMIN PORTAL
+        </div>
+
+        <nav class="admin-nav">
+
+            <a href="#" class="admin-nav-link active">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="admin-nav-link">
+                <span class="nav-icon">♙</span>
+                <span>User Management</span>
+            </a>
+
+            <a href="#" class="admin-nav-link">
+                <span class="nav-icon">▣</span>
+                <span>Claims</span>
+            </a>
+
+            <a href="#" class="admin-nav-link">
+                <span class="nav-icon">▱</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="admin-nav-link">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+            <a href="#" class="admin-nav-link logout-link" id="adminLogoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="admin-main">
+
+        <!-- TOP BAR -->
+
+        <header class="admin-topbar">
+
+            <div class="breadcrumb">
+                <span>Dashboard</span>
+                <span class="breadcrumb-separator">›</span>
+                <strong>Overview</strong>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="admin-search">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search items, claims..."
+                    >
+                </div>
+
+                <div class="admin-profile">
+
+                    <div class="profile-avatar">
+                        JD
+                    </div>
+
+                    <div class="profile-info">
+                        <strong id="adminName">John Doe</strong>
+                        <span>Admin Account</span>
+                    </div>
+
+                    <span class="profile-arrow">⌄</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= PAGE CONTENT ================= -->
+
+        <div class="admin-content">
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <div>
+                    <h1>System Overview</h1>
+
+                    <p>
+                        Central command for global lost-and-found
+                        operations and facility health.
+                    </p>
+                </div>
+
+                <button class="refresh-btn" id="refreshDataBtn">
+                    ↻ &nbsp; Refresh Data
+                </button>
+
+            </div>
+
+
+            <!-- ================= STATISTICS ================= -->
+
+            <section class="stats-grid">
+
+                <!-- TOTAL REPORTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon reports-icon">
+                            ▤
+                        </div>
+
+                        <span class="stat-change positive">
+                            ↗ +12.5%
+                        </span>
+                    </div>
+
+                    <div class="stat-label">
+                        TOTAL REPORTS
+                    </div>
+
+                    <div class="stat-value" id="totalReports">
+                        14,284
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVE USERS -->
+
+                <div class="stat-card active-stat">
+
+                    <div class="stat-top">
+                        <div class="stat-icon users-icon">
+                            ♧
+                        </div>
+
+                        <span class="stat-change positive">
+                            ↗ +9.2%
+                        </span>
+                    </div>
+
+                    <div class="stat-label">
+                        ACTIVE USERS
+                    </div>
+
+                    <div class="stat-value" id="activeUsers">
+                        8,942
+                    </div>
+
+                </div>
+
+
+                <!-- VERIFICATION QUEUE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon queue-icon">
+                            ◷
+                        </div>
+
+                        <span class="stat-change negative">
+                            ↘ -18.4%
+                        </span>
+                    </div>
+
+                    <div class="stat-label">
+                        VERIFICATION QUEUE
+                    </div>
+
+                    <div class="stat-value" id="verificationQueue">
+                        156
+                    </div>
+
+                </div>
+
+
+                <!-- SUCCESS RATE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon success-icon">
+                            ✓
+                        </div>
+
+                        <span class="stat-change positive">
+                            ↗ +2.1%
+                        </span>
+                    </div>
+
+                    <div class="stat-label">
+                        SUCCESS RATE
+                    </div>
+
+                    <div class="stat-value" id="successRate">
+                        94.2%
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ACTIVITY TRENDS ================= -->
+
+            <section class="activity-section">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Activity Trends</h2>
+
+                        <p>
+                            Volume comparison between reports and resolutions
+                        </p>
+                    </div>
+
+                    <div class="chart-legend">
+
+                        <span>
+                            <i class="legend-dot reports-dot"></i>
+                            REPORTS
+                        </span>
+
+                        <span>
+                            <i class="legend-dot resolved-dot"></i>
+                            RESOLVED
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container">
+
+                    <div class="chart-y-axis">
+                        <span>6000</span>
+                        <span>4500</span>
+                        <span>3000</span>
+                        <span>1500</span>
+                        <span>0</span>
+                    </div>
+
+                    <div class="chart-area">
+
+                        <div class="chart-grid-line line-1"></div>
+                        <div class="chart-grid-line line-2"></div>
+                        <div class="chart-grid-line line-3"></div>
+                        <div class="chart-grid-line line-4"></div>
+                        <div class="chart-grid-line line-5"></div>
+
+                        <svg
+                            class="activity-chart"
+                            viewBox="0 0 700 220"
+                            preserveAspectRatio="none"
+                        >
+
+                            <!-- Reports -->
+
+                            <path
+                                class="reports-area"
+                                d="M0,135
+                                   C80,145 100,150 160,145
+                                   C220,140 245,85 320,82
+                                   C390,80 410,105 470,112
+                                   C540,120 590,80 700,40
+                                   L700,220
+                                   L0,220 Z"
+                            />
+
+                            <path
+                                class="reports-line"
+                                d="M0,135
+                                   C80,145 100,150 160,145
+                                   C220,140 245,85 320,82
+                                   C390,80 410,105 470,112
+                                   C540,120 590,80 700,40"
+                            />
+
+                            <!-- Resolved -->
+
+                            <path
+                                class="resolved-area"
+                                d="M0,155
+                                   C80,160 120,165 160,160
+                                   C230,155 250,120 320,118
+                                   C390,116 430,115 470,108
+                                   C540,100 600,75 700,55
+                                   L700,220
+                                   L0,220 Z"
+                            />
+
+                            <path
+                                class="resolved-line"
+                                d="M0,155
+                                   C80,160 120,165 160,160
+                                   C230,155 250,120 320,118
+                                   C390,116 430,115 470,108
+                                   C540,100 600,75 700,55"
+                            />
+
+                        </svg>
+
+                        <div class="chart-months">
+                            <span>Jan</span>
+                            <span>Feb</span>
+                            <span>Mar</span>
+                            <span>Apr</span>
+                            <span>May</span>
+                            <span>Jun</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= VERIFICATION SUMMARY ================= -->
+
+            <section class="verification-section">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Verification Summary</h2>
+                    </div>
+
+                    <div class="verification-actions">
+
+                        <div class="queue-search">
+                            <span>⌕</span>
+
+                            <input
+                                type="text"
+                                id="queueSearch"
+                                placeholder="Search queue..."
+                            >
+                        </div>
+
+                        <button class="filter-btn" id="filterBtn">
+                            ⚱
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="verification-table">
+
+                    <div class="table-header">
+                        <span>ITEM NAME</span>
+                        <span>TYPE</span>
+                        <span>STATUS</span>
+                    </div>
+
+
+                    <div id="verificationRows">
+
+                        <div class="verification-row">
+
+                            <strong>Black Phone</strong>
+
+                            <span>Claim</span>
+
+                            <span class="pending-status">
+                                ◉ Pending
+                            </span>
+
+                        </div>
+
+
+                        <div class="verification-row">
+
+                            <strong>Brown Wallet</strong>
+
+                            <span>Claim</span>
+
+                            <span class="pending-status">
+                                ◉ Pending
+                            </span>
+
+                        </div>
+
+
+                        <div class="verification-row">
+
+                            <strong>ID Card</strong>
+
+                            <span>Claim</span>
+
+                            <span class="pending-status">
+                                ◉ Pending
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/admin_dashboard.js' %}"></script>
+
+</body>
+</html>

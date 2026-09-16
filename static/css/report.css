@@ -224,6 +224,19 @@ body {
 
 
 /* =========================
+   MULTI-STEP FORM
+========================= */
+
+.form-step {
+    display: none !important;
+}
+
+.form-step.active {
+    display: grid !important;
+}
+
+
+/* =========================
    CONTENT
 ========================= */
 
@@ -594,4 +607,44 @@ body {
     text-align: center;
     font-size: 10px;
     margin-top: 15px;
+}
+
+/* =========================
+   REPORT STEP BUTTONS
+========================= */
+
+.next-step-btn,
+.submit-report-btn {
+    border: none;
+    background: #111a31;
+    color: #ffffff;
+    padding: 11px 25px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.next-step-btn:hover,
+.submit-report-btn:hover {
+    background: #202b48;
+}
+
+
+.prev-step-btn {
+    border: 1px solid #dfe3e9;
+    background: #ffffff;
+    color: #394156;
+    padding: 11px 22px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.prev-step-btn:hover {
+    background: #f5f6fa;
+    border-color: #cbd0d8;
 }

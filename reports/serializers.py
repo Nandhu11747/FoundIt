@@ -1,9 +1,24 @@
 from rest_framework import serializers
 
-from .models import Report
+from .models import Report,ReportImage
 
+
+class ReportImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReportImage
+        fields = [
+            "id",
+            "image_url",
+            "image_type",
+            "created_at",
+        ]
 
 class ReportSerializer(serializers.ModelSerializer):
+    images = ReportImageSerializer(
+        many=True,
+        read_only=True
+    )
 
     class Meta:
         model = Report
@@ -24,6 +39,7 @@ class ReportSerializer(serializers.ModelSerializer):
             "status",
             "created_at",
             "updated_at",
+            "images",
         ]
 
         read_only_fields = [

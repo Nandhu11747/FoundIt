@@ -1,0 +1,321 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Claim | FoundIt</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/claim.css' %}"
+    >
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-mark">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-label">MENU</p>
+
+            <a href="/dashboard/" class="nav-item">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⌕</span>
+                <span>Browse Items</span>
+            </a>
+
+            <a href="/claims/" class="nav-item active">
+                <span class="nav-icon">♧</span>
+                <span>My Claim</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>Notification</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">◎</span>
+                <span>Profile</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+            <a
+                href="#"
+                class="nav-item nav-item_logout"
+                id="logoutBtn"
+            >
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- Top Header -->
+
+        <header class="top-header">
+
+            <div class="breadcrumb">
+
+                <span>Dashboard</span>
+
+                <span class="breadcrumb-arrow">›</span>
+
+                <strong>My Claim</strong>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="search-box">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        type="text"
+                        placeholder="Search items, claims..."
+                    >
+
+                </div>
+
+                <div class="user-profile">
+
+                    <div
+                        class="user-avatar"
+                        id="userAvatar"
+                    >
+                        U
+                    </div>
+
+                    <div class="user-details">
+
+                        <strong id="userName">
+                            User
+                        </strong>
+
+                        <span>Active Member</span>
+
+                    </div>
+
+                    <span class="profile-arrow">⌄</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= PAGE CONTENT ================= -->
+
+        <div class="claim-page-content">
+
+            <h1>My Claim</h1>
+
+
+            <!-- ================= MATCHED ITEM ================= -->
+
+            <section
+                class="claim-item-card"
+                id="claimItemCard"
+            >
+
+                <div class="claim-item-image">
+
+                    <img
+                        id="claimItemImage"
+                        src="{% static 'images/item-placeholder.png' %}"
+                        alt="Found item"
+                    >
+
+                </div>
+
+                <div class="claim-item-info">
+
+                    <span
+                        class="claim-item-category"
+                        id="claimItemCategory"
+                    >
+                        Category
+                    </span>
+
+                    <h2 id="claimItemName">
+                        Loading item...
+                    </h2>
+
+                    <p id="claimItemDescription">
+                        Found item details
+                    </p>
+
+                    <div class="claim-item-details">
+
+                        <span id="claimItemLocation">
+                            ◉ Location
+                        </span>
+
+                        <span id="claimItemDate">
+                            ● Date
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PROOF OF OWNERSHIP ================= -->
+
+            <section class="claim-form-card">
+
+                <div class="claim-heading">
+
+                    <h2>
+                        Proof Of Ownership
+                    </h2>
+
+                    <p>
+                        Provide specific, non-public details
+                        and photographic evidence to verify
+                        this item belongs to you.
+                    </p>
+
+                </div>
+
+
+                <!-- Unique Identification Details -->
+
+                <div class="claim-field">
+
+                    <label for="uniqueDetails">
+                        Unique identification details
+                    </label>
+
+                    <textarea
+                        id="uniqueDetails"
+                        name="unique_identification_details"
+                        rows="4"
+                        placeholder="Describe unique scratches, custom engravings, serial numbers, screen damage or exact context when it was lost."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Photographic Evidence -->
+
+                <div class="claim-field">
+
+                    <label for="claimEvidence">
+                        Photographic Evidence
+                        <span>(Optional)</span>
+                    </label>
+
+                    <div
+                        class="evidence-upload"
+                        id="evidenceUpload"
+                    >
+
+                        <div class="upload-icon">
+                            ▧
+                        </div>
+
+                        <strong>
+                            Select Files
+                        </strong>
+
+                        <span>
+                            or drag and drop images here
+                        </span>
+
+                        <input
+                            type="file"
+                            id="claimEvidence"
+                            name="evidence"
+                            accept="image/*"
+                        >
+
+                    </div>
+
+                    <p
+                        class="selected-file"
+                        id="selectedFile"
+                    ></p>
+
+                </div>
+
+
+                <!-- Submit -->
+
+                <div class="claim-submit-area">
+
+                    <button
+                        type="button"
+                        id="submitClaimBtn"
+                    >
+                        Submit Claim
+                    </button>
+
+                </div>
+
+                <p
+                    id="claimMessage"
+                    class="claim-message"
+                    role="alert"
+                ></p>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/claim.js' %}"></script>
+
+</body>
+
+</html>

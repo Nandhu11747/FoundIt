@@ -331,6 +331,88 @@ closeOtp.addEventListener(
     }
 );
 
+resendOtp.addEventListener(
+    "click",
+    async function () {
+
+        if (!verificationEmail) {
+            otpMessage.textContent =
+                "Email not found. Please register again.";
+
+            otpMessage.style.color =
+                "#dc2626";
+
+            return;
+        }
+
+        resendOtp.disabled = true;
+
+        resendOtp.textContent =
+            "Sending...";
+
+        otpMessage.textContent = "";
+
+        try {
+
+            const response = await fetch(
+                "/auth/resend-otp/",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: verificationEmail
+                    })
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    "Unable to resend OTP."
+                );
+            }
+
+            otpInputs.forEach(function (input) {
+                input.value = "";
+            });
+
+            otpInputs[0].focus();
+
+            otpMessage.textContent =
+                "A new OTP has been sent.";
+
+            otpMessage.style.color =
+                "#00a99d";
+
+        }
+
+        catch (error) {
+
+            otpMessage.textContent =
+                error.message;
+
+            otpMessage.style.color =
+                "#dc2626";
+
+        }
+
+        finally {
+
+            resendOtp.disabled = false;
+
+            resendOtp.textContent =
+                "Resend OTP";
+        }
+
+    }
+);
 
 
 otpModal.addEventListener(

@@ -171,44 +171,59 @@
             </div>
           </section>
 
-          <!-- ================= MATCH ALERT ================= -->
+          <!-- ================= POTENTIAL MATCHES ================= -->
 
-          <section class="match-card">
-            <div class="match-top">
-              <span class="confidence-badge"> HIGH CONFIDENCE MATCH </span>
+<section class="potential-matches-section">
 
-              <span class="match-time"> Identified 45m ago </span>
-            </div>
+    <div class="section-heading">
+        <div>
+            <h2>Potential Matches</h2>
+            <p>Possible matches for your lost items</p>
+        </div>
+    </div>
 
-            <div class="match-body">
-              <div class="match-information">
-                <h2>
-                  We found a potential match for your "Brown Leather Wallet"!
-                </h2>
+    <div class="matches-slider">
 
-                <p>
-                  A user recently reported finding a similar item near Central
-                  Park Food Court. The AI confidence score for this match is
-                  <strong>91.8%</strong>.
-                </p>
+        <button
+            type="button"
+            class="match-nav-btn"
+            id="prevMatchBtn"
+            aria-label="Previous match"
+        >
+            &#10094;
+        </button>
 
-                <div class="match-details">
-                  <span> ◉ Central Park Food Court </span>
+        <div
+            class="match-card-container"
+            id="matchCardContainer"
+        >
+            <!-- Match card will be inserted by JavaScript -->
+        </div>
 
-                  <span> ● Found 45m ago </span>
-                </div>
-              </div>
+        <button
+            type="button"
+            class="match-nav-btn"
+            id="nextMatchBtn"
+            aria-label="Next match"
+        >
+            &#10095;
+        </button>
 
-              <div class="match-actions">
-                <button class="match-dismiss">Not Mine</button>
+    </div>
 
-                <button class="match-view">
-                  View &amp; Verify Match
-                  <span>→</span>
-                </button>
-              </div>
-            </div>
-          </section>
+    <div
+        class="match-dots"
+        id="matchDots"
+    ></div>
+
+    <p
+        class="no-matches-message"
+        id="noMatchesMessage"
+    >
+        No potential matches found yet.
+    </p>
+
+</section>
 
           <!-- ================= LOWER GRID ================= -->
 

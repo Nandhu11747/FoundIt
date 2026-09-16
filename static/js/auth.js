@@ -203,7 +203,7 @@ async function requireAuthentication() {
 
     if (!token) {
         window.location.href = "/login/";
-        return false;
+        return null;
     }
 
     const response = await authenticatedFetch(
@@ -218,10 +218,11 @@ async function requireAuthentication() {
         sessionStorage.clear();
 
         window.location.href = "/login/";
-        return false;
+        return null;
     }
-
-    return true;
+    const user = await response.json();
+    
+    return user;
 }
 
 function logout() {

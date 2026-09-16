@@ -1,0 +1,663 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Claim Verification | FoundIt</title>
+
+    <!-- Existing admin dashboard CSS -->
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+    <!-- Claim verification CSS -->
+    <link rel="stylesheet" href="{% static 'css/admin_claim_verification.css' %}">
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="admin-sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-icon">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <div class="sidebar-section-title">
+            ADMIN PORTAL
+        </div>
+
+        <nav class="admin-nav">
+
+            <a href="/admin-dashboard/" class="admin-nav-link">
+                <span>⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="admin-nav-link">
+                <span>♙</span>
+                <span>User Management</span>
+            </a>
+
+            <a href="#" class="admin-nav-link active">
+                <span>▣</span>
+                <span>Claims</span>
+            </a>
+
+            <a href="#" class="admin-nav-link">
+                <span>▤</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="admin-nav-link">
+                <span>⚙</span>
+                <span>Settings</span>
+            </a>
+
+            <a href="#" class="admin-nav-link logout-link" id="adminLogoutBtn">
+                <span>⇥</span>
+                <span>Sign Out</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN AREA ================= -->
+
+    <main class="admin-main">
+
+        <!-- TOP BAR -->
+
+        <header class="admin-topbar">
+
+            <div class="breadcrumb">
+                <span>Dashboard</span>
+                <span>›</span>
+                <strong>Claims</strong>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search claims..."
+                    >
+                </div>
+
+                <div class="admin-user">
+
+                    <div class="admin-avatar">
+                        JD
+                    </div>
+
+                    <div class="admin-user-info">
+                        <strong>Admin</strong>
+                        <span>Administrator</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= PAGE CONTENT ================= -->
+
+        <div class="claim-verification-page">
+
+            <!-- Page Header -->
+
+            <div class="verification-page-header">
+
+                <div>
+
+                    <div class="page-label">
+                        ← Verification Queue
+                    </div>
+
+                    <h1>Claim Verification</h1>
+
+                    <div class="claim-status-line">
+
+                        <span class="status-dot"></span>
+
+                        <span class="pending-status">
+                            Pending Verification
+                        </span>
+
+                        <span class="submitted-text">
+                            Submitted by user
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="header-actions">
+
+                    <button class="icon-action-btn">
+                        ↗
+                    </button>
+
+                    <button class="icon-action-btn warning">
+                        ⚠
+                    </button>
+
+                    <button class="contact-btn">
+                        Contact Parties
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MATCH SUMMARY ================= -->
+
+            <section class="match-summary-card">
+
+                <div class="match-score">
+
+                    <div class="score-circle">
+                        <span id="matchScore">92%</span>
+                    </div>
+
+                </div>
+
+                <div class="match-summary-content">
+
+                    <h2>
+                        High Confidence Match Detected
+                    </h2>
+
+                    <p>
+                        AI engine identified multiple matching
+                        characteristics between the lost and found reports.
+                    </p>
+
+                    <div class="match-reasons">
+
+                        <span>
+                            ✓ Brand Match
+                        </span>
+
+                        <span>
+                            ✓ Visual Match
+                        </span>
+
+                        <span>
+                            ✓ Geo Match
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="match-actions">
+
+                    <button
+                        type="button"
+                        class="reject-btn"
+                        id="rejectClaimBtn"
+                    >
+                        ⊘ Reject Claim
+                    </button>
+
+                    <button
+                        type="button"
+                        class="approve-btn"
+                        id="approveClaimBtn"
+                    >
+                        ✓ Approve Claim
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= MAIN GRID ================= -->
+
+            <div class="verification-content-grid">
+
+
+                <!-- ================= REPORTS ================= -->
+
+                <div class="reports-container">
+
+
+                    <!-- CLAIMANT REPORT -->
+
+                    <section class="report-card">
+
+                        <div class="report-card-header">
+
+                            <div>
+
+                                <span class="report-label">
+                                    Claimant's Report
+                                </span>
+
+                                <h3>
+                                    Lost Report
+                                </h3>
+
+                            </div>
+
+                            <span class="report-type lost">
+                                LOST REPORT
+                            </span>
+
+                        </div>
+
+
+                        <div class="report-image-container">
+
+                            <img
+                                id="claimantReportImage"
+                                src="{% static 'images/item-placeholder.png' %}"
+                                alt="Claimant's item"
+                            >
+
+                        </div>
+
+
+                        <div class="report-details">
+
+                            <h3 id="claimantItemName">
+                                Brown Leather Wallet
+                            </h3>
+
+                            <span
+                                class="category"
+                                id="claimantCategory"
+                            >
+                                Accessories
+                            </span>
+
+
+                            <div class="detail-row">
+
+                                <span>⌖</span>
+
+                                <div>
+                                    <small>Location</small>
+                                    <strong id="claimantLocation">
+                                        Grand Central Terminal
+                                    </strong>
+                                </div>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span>◷</span>
+
+                                <div>
+                                    <small>Date & Time</small>
+                                    <strong id="claimantDateTime">
+                                        Aug 18, 2026 at Around 11:30 AM
+                                    </strong>
+                                </div>
+
+                            </div>
+
+
+                            <div class="description-section">
+
+                                <strong>
+                                    Detailed Description
+                                </strong>
+
+                                <p id="claimantDescription">
+                                    Vintage Fossil leather wallet.
+                                    Contains a driver's license,
+                                    two credit cards, and a small photo
+                                    of a dog in the transparent window.
+                                    Scratched on the bottom right corner.
+                                </p>
+
+                            </div>
+
+
+                            <div class="tags-section">
+
+                                <strong>USER TAGS</strong>
+
+                                <div class="tags">
+
+                                    <span>Fossil</span>
+                                    <span>Leather</span>
+                                    <span>Dog Photo</span>
+                                    <span>Scratched</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-user">
+
+                            <div class="user-avatar">
+                                EW
+                            </div>
+
+                            <div>
+
+                                <strong id="claimantName">
+                                    Emily Watson
+                                </strong>
+
+                                <span>
+                                    REPORTER
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- FINDER REPORT -->
+
+                    <section class="report-card">
+
+                        <div class="report-card-header">
+
+                            <div>
+
+                                <span class="report-label">
+                                    Finder's Report
+                                </span>
+
+                                <h3>
+                                    Found Report
+                                </h3>
+
+                            </div>
+
+                            <span class="report-type found">
+                                FOUND REPORT
+                            </span>
+
+                        </div>
+
+
+                        <div class="report-image-container">
+
+                            <img
+                                id="finderReportImage"
+                                src="{% static 'images/item-placeholder.png' %}"
+                                alt="Found item"
+                            >
+
+                        </div>
+
+
+                        <div class="report-details">
+
+                            <h3 id="finderItemName">
+                                Brown Leather Wallet
+                            </h3>
+
+                            <span
+                                class="category"
+                                id="finderCategory"
+                            >
+                                Accessories
+                            </span>
+
+
+                            <div class="detail-row">
+
+                                <span>⌖</span>
+
+                                <div>
+
+                                    <small>Location</small>
+
+                                    <strong id="finderLocation">
+                                        Grand Central Terminal
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span>◷</span>
+
+                                <div>
+
+                                    <small>Date & Time</small>
+
+                                    <strong id="finderDateTime">
+                                        Aug 18, 2026 at Around 11:45 AM
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="description-section">
+
+                                <strong>
+                                    Detailed Description
+                                </strong>
+
+                                <p id="finderDescription">
+                                    Vintage Fossil leather wallet.
+                                    Contains a driver's license,
+                                    two credit cards, and a small photo
+                                    of a dog in the transparent window.
+                                </p>
+
+                            </div>
+
+
+                            <div class="tags-section">
+
+                                <strong>USER TAGS</strong>
+
+                                <div class="tags">
+
+                                    <span>Fossil</span>
+                                    <span>Leather</span>
+                                    <span>Dog Photo</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-user">
+
+                            <div class="user-avatar">
+                                SF
+                            </div>
+
+                            <div>
+
+                                <strong id="finderName">
+                                    Security Staff - Mike
+                                </strong>
+
+                                <span>
+                                    FINDER
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+
+                <!-- ================= RIGHT PANEL ================= -->
+
+                <aside class="verification-sidebar">
+
+
+                    <!-- VERIFICATION DETAILS -->
+
+                    <section class="verification-details-card">
+
+                        <h3>
+                            ◉ Verification Details
+                        </h3>
+
+
+                        <div class="verification-status-box">
+
+                            <span>
+                                VERIFICATION STATUS
+                            </span>
+
+                            <strong id="verificationStatus">
+                                IN PROGRESS
+                            </strong>
+
+                        </div>
+
+
+                        <div class="checklist">
+
+                            <h4>
+                                VALIDATION CHECKLIST
+                            </h4>
+
+
+                            <label class="check-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="ownerIdVerified"
+                                >
+
+                                <span>
+                                    Owner ID Verified
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="visualMatch"
+                                >
+
+                                <span>
+                                    Item Visual Match
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="locationProximity"
+                                >
+
+                                <span>
+                                    Location Proximity
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="ownershipProof"
+                                >
+
+                                <span>
+                                    Ownership Proof
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- SAFETY ADVISORY -->
+
+                    <section class="safety-advisory">
+
+                        <div class="advisory-icon">
+                            !
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                SAFETY ADVISORY
+                            </h3>
+
+                            <p>
+                                Verify all evidence before approving
+                                a claim. Do not authorize independent
+                                handovers for high-value items.
+                            </p>
+
+                        </div>
+
+                    </section>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- Existing authentication -->
+<script src="{% static 'js/auth.js' %}"></script>
+
+<!-- Admin dashboard JS -->
+<script src="{% static 'js/admin_dashboard.js' %}"></script>
+
+<!-- Claim verification JS -->
+<script src="{% static 'js/admin_claim_verification.js' %}"></script>
+
+</body>
+</html>

@@ -96,3 +96,75 @@ class Report(models.Model):
 
     def __str__(self):
         return f"{self.item_name} - {self.type}"
+
+
+class ReportImage(models.Model):
+
+    id = models.BigAutoField(primary_key=True)
+
+    report = models.ForeignKey(
+        Report,
+        on_delete=models.CASCADE,
+        related_name="images"
+    )
+
+    image_url = models.ImageField(
+        upload_to="report_images/",
+        max_length=500
+    )
+
+    image_type = models.CharField(
+        max_length=50,
+        default="found_item"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.report.item_name} - {self.image_type}"
+
+
+class Match(models.Model):
+
+    MATCH_STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("confirmed", "Confirmed"),
+        ("rejected", "Rejected"),
+    ]
+
+    id = models.BigAutoField(primary_key=True)
+
+    lost_report = models.ForeignKey(
+        Report,
+        on_delete=models.CASCADE,
+        related_name="lost_matches"
+    )
+
+    found_report = models.ForeignKey(
+        Report,
+        on_delete=models.CASCADE,
+        related_name="found_matches"
+    )
+
+    match_score = models.DecimalField(
+        max_digits=5,
+        decimal_places=2
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=MATCH_STATUS_CHOICES,
+        default="pending"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return (
+            f"Match: Lost #{self.lost_report.id} "
+            f"<-> Found #{self.found_report.id}"
+        )

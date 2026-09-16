@@ -252,7 +252,7 @@
              STEP 1
         ========================== -->
 
-        <section class="report-content">
+        <section class="report-content form-step">
 
 
             <!-- FORM CARD -->
@@ -505,7 +505,7 @@
 
                         <button
                             type="button"
-                            class="next-btn"
+                            class="next-step-btn"
                             id="foundNextStepBtn"
                         >
                             Continue to Next Step →
@@ -577,6 +577,313 @@
 
         </section>
 
+
+        <!-- =========================
+                    STEP 2
+        ========================== -->
+
+<section class="report-content form-step">
+
+    <div class="form-card">
+
+        <div class="card-heading">
+
+            <h2>
+                Where and when did you find it?
+            </h2>
+
+            <p>
+                Providing the location and time helps us
+                match the item with nearby lost reports.
+            </p>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <!-- LOCATION -->
+
+            <div class="form-group">
+
+                <label for="foundLocation">
+                    FOUND LOCATION
+                </label>
+
+                <input
+                    type="text"
+                    id="foundLocation"
+                    placeholder="e.g. Kochi Metro Station"
+                    required
+                >
+
+            </div>
+
+
+            <!-- DATE -->
+
+            <div class="form-group">
+
+                <label for="foundEventDate">
+                    DATE FOUND
+                </label>
+
+                <input
+                    type="date"
+                    id="foundEventDate"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- TIME -->
+
+        <div class="form-group">
+
+            <label for="foundEventTime">
+                APPROXIMATE TIME
+            </label>
+
+            <input
+                type="time"
+                id="foundEventTime"
+            >
+
+            <small>
+                Leave blank if you don't remember the exact time.
+            </small>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="prev-step-btn"
+            >
+                ← Previous
+            </button>
+
+            <button
+                type="button"
+                class="next-step-btn"
+            >
+                Continue to Evidence →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     STEP 3
+========================== -->
+
+<section class="report-content form-step">
+
+    <div class="form-card">
+
+        <div class="card-heading">
+
+            <h2>
+                Help us identify the item
+            </h2>
+
+            <p>
+                Add details that can help verify the rightful owner.
+                These details will remain private.
+            </p>
+
+        </div>
+
+
+        <!-- PRIVATE IDENTIFICATION DETAILS -->
+
+        <div class="form-group">
+
+            <label for="foundPrivateDetails">
+                PRIVATE IDENTIFICATION DETAILS
+            </label>
+
+            <textarea
+                id="foundPrivateDetails"
+                rows="5"
+                placeholder="Example: unique scratches, stickers, hidden marks, serial number, contents inside the item..."
+                required
+            ></textarea>
+
+            <small>
+                These details will not be shown publicly.
+            </small>
+
+        </div>
+
+
+        <!-- ITEM PHOTO -->
+
+        <div class="form-group">
+
+            <label for="foundItemPhoto">
+                PHOTO OF FOUND ITEM
+            </label>
+
+            <input
+                type="file"
+                id="foundItemPhoto"
+                accept="image/*"
+            >
+
+            <small>
+                Upload a clear photo of the item if available.
+            </small>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="prev-step-btn"
+            >
+                ← Previous
+            </button>
+
+            <button
+                type="button"
+                class="next-step-btn"
+            >
+                Continue to Review →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     STEP 4
+========================== -->
+
+<section class="report-content form-step">
+
+    <div class="form-card">
+
+        <div class="card-heading">
+
+            <h2>
+                Review your found item report
+            </h2>
+
+            <p>
+                Please check the details before submitting your report.
+            </p>
+
+        </div>
+
+
+        <div class="review-section">
+
+            <div class="review-item">
+                <span>ITEM NAME</span>
+                <strong id="reviewFoundItemName">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>CATEGORY</span>
+                <strong id="reviewFoundCategory">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>DESCRIPTION</span>
+                <strong id="reviewFoundDescription">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>BRAND</span>
+                <strong id="reviewFoundBrand">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>COLOR</span>
+                <strong id="reviewFoundColor">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>CONDITION</span>
+                <strong id="reviewFoundCondition">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>FOUND LOCATION</span>
+                <strong id="reviewFoundLocation">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>DATE FOUND</span>
+                <strong id="reviewFoundEventDate">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>APPROXIMATE TIME</span>
+                <strong id="reviewFoundEventTime">—</strong>
+            </div>
+
+            <div class="review-item">
+                <span>PRIVATE IDENTIFICATION DETAILS</span>
+                <strong>Provided privately</strong>
+            </div>
+
+            <div class="review-item">
+                <span>ITEM PHOTO</span>
+                <strong id="reviewFoundPhoto">—</strong>
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="prev-step-btn"
+            >
+                ← Previous
+            </button>
+
+            <button
+                type="button"
+                class="submit-report-btn"
+                id="submitFoundReportBtn"
+            >
+                Submit Found Report
+            </button>
+
+        </div>
+
+
+        <p
+            id="foundReportMessage"
+            class="report-message"
+            role="alert"
+        ></p>
+
+    </div>
+
+</section>
 
 
         <!-- =========================

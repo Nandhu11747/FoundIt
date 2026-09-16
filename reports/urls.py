@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     CreateReportView,
     MyReportsView,
+    MyMatchesView
 )
 from django.views.generic import TemplateView
 
@@ -19,6 +20,12 @@ urlpatterns = [
         "my/",
         MyReportsView.as_view(),
         name="my-reports"
+    ),
+
+    path(
+        "matches/",
+        MyMatchesView.as_view(),
+        name="my-matches"
     ),
 
     path(

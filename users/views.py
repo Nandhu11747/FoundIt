@@ -11,14 +11,27 @@ from rest_framework import status
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User, EmailVerification
+from .models import User
 from .serializers import RegisterSerializer, LoginSerializer
 from .utils import generate_otp
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import redirect
 from django.http import HttpResponse
+from .tasks import send_otp_email
+from django.views.generic import TemplateView
+from users.models import User
+from reports.models import Report
+from claims.models import Claim
 
+import redis
+import json
 
+redis_client = redis.Redis(
+    host="localhost",
+    port=6379,
+    db=0,
+    decode_responses=True
+)
 
 class RegisterView(APIView):
 
@@ -40,27 +53,25 @@ class RegisterView(APIView):
             data["password"]
         )
 
-        expires_at = timezone.now() + timedelta(minutes=5)
+        signup_data = {
+            "otp": otp,
+            "full_name": data["full_name"],
+            "phone": data["phone"],
+            "password_hash": password_hash,
+        }
 
-        EmailVerification.objects.filter(
-            email=data["email"]
-        ).delete()
+        redis_key = f"signup:{data['email']}"
 
-        verification = EmailVerification.objects.create(
-            email=data["email"],
-            otp=otp,
-            full_name=data["full_name"],
-            phone=data["phone"],
-            password_hash=password_hash,
-            expires_at=expires_at
+        redis_client.setex(
+            redis_key,
+            300,
+            json.dumps(signup_data)
+        )
+        send_otp_email.delay(
+            data["email"],
+            otp
         )
 
-        send_mail(
-            subject="FoundIt Email Verification",
-            message=f"Your FoundIt verification OTP is: {otp}",
-            from_email=None,
-            recipient_list=[verification.email],
-        )
 
         return Response(
             {
@@ -68,7 +79,6 @@ class RegisterView(APIView):
             },
             status=status.HTTP_200_OK
         )
-
 
 class VerifyOTPView(APIView):
 
@@ -85,29 +95,21 @@ class VerifyOTPView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            verification = EmailVerification.objects.get(
-                email=email
-            )
-        except EmailVerification.DoesNotExist:
+        redis_key = f"signup:{email}"
+
+        signup_data = redis_client.get(redis_key)
+
+        if not signup_data:
             return Response(
                 {
-                    "error": "No OTP verification found"
+                    "error": "No OTP verification found or OTP has expired"
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if timezone.now() > verification.expires_at:
-            verification.delete()
+        signup_data = json.loads(signup_data)
 
-            return Response(
-                {
-                    "error": "OTP has expired"
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        if verification.otp != otp:
+        if signup_data["otp"] != otp:
             return Response(
                 {
                     "error": "Invalid OTP"
@@ -116,14 +118,14 @@ class VerifyOTPView(APIView):
             )
 
         user = User.objects.create(
-            email=verification.email,
-            full_name=verification.full_name,
-            phone=verification.phone,
-            password=verification.password_hash,
+            email=email,
+            full_name=signup_data["full_name"],
+            phone=signup_data["phone"],
+            password=signup_data["password_hash"],
             status="active"
         )
 
-        verification.delete()
+        redis_client.delete(redis_key)
 
         return Response(
             {
@@ -135,6 +137,55 @@ class VerifyOTPView(APIView):
         )
 
 
+class ResendOTPView(APIView):
+
+    def post(self, request):
+
+        email = request.data.get("email")
+
+        if not email:
+            return Response(
+                {
+                    "error": "Email is required"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        redis_key = f"signup:{email}"
+
+        signup_data = redis_client.get(redis_key)
+
+        if not signup_data:
+            return Response(
+                {
+                    "error": "Signup session expired. Please register again."
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        signup_data = json.loads(signup_data)
+
+        new_otp = generate_otp()
+
+        signup_data["otp"] = new_otp
+
+        redis_client.setex(
+            redis_key,
+            300,
+            json.dumps(signup_data)
+        )
+
+        send_otp_email.delay(
+            email,
+            new_otp
+        )
+
+        return Response(
+            {
+                "message": "New OTP sent successfully"
+            },
+            status=status.HTTP_200_OK
+        )
 
 class LoginView(APIView):
 
@@ -157,6 +208,7 @@ class LoginView(APIView):
                         "id": user.id,
                         "full_name": user.full_name,
                         "email": user.email,
+                        "is_superuser": user.is_superuser,
                     }
                 },
                 status=status.HTTP_200_OK
@@ -243,6 +295,54 @@ class UserMeView(APIView):
                 "phone": user.phone,
                 "location": user.location,
                 "profile_photo": user.profile_photo,
+                "is_superuser": user.is_superuser,
+            },
+            status=status.HTTP_200_OK
+        )
+
+class AdminDashboardView(TemplateView):
+    template_name = "admin_dashboard.html"
+
+
+class AdminDashboardStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if not request.user.is_superuser:
+            return Response(
+                {"error": "Admin access required."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        total_reports = Report.objects.count()
+
+        active_users = User.objects.filter(
+            status="active"
+        ).count()
+
+        verification_queue = Claim.objects.filter(
+            status="pending"
+        ).count()
+
+        resolved_reports = Report.objects.filter(
+            status__in=["returned", "closed"]
+        ).count()
+
+        if total_reports > 0:
+            success_rate = round(
+                (resolved_reports / total_reports) * 100,
+                1
+            )
+        else:
+            success_rate = 0
+
+        return Response(
+            {
+                "total_reports": total_reports,
+                "active_users": active_users,
+                "verification_queue": verification_queue,
+                "success_rate": success_rate
             },
             status=status.HTTP_200_OK
         )
