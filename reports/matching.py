@@ -13,7 +13,7 @@ def find_matching_lost_reports(found_report):
         type="lost",
         category=found_report.category
     ).exclude(
-        id=found_report.id
+        user=found_report.user
     )
 
     return lost_reports
@@ -112,7 +112,7 @@ def create_matches_for_lost_report(lost_report):
         type="found",
         category=lost_report.category
     ).exclude(
-        id=lost_report.id
+        user=lost_report.user
     )
 
     matches_created = []

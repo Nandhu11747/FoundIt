@@ -1,3 +1,5 @@
+from urllib import request
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -163,6 +165,7 @@ class MatchDetailsView(APIView):
         )
 
 class AdminPendingClaimsView(APIView):
+    
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -272,6 +275,16 @@ class AdminClaimVerificationView(APIView):
                 found_image.image_url.url
             )
 
+        # Get lost report image
+        lost_image = lost_report.images.first()
+
+        lost_image_url = None
+
+        if lost_image:
+            lost_image_url = request.build_absolute_uri(
+                lost_image.image_url.url
+            )
+
         return Response(
             {
                 "claim": {
@@ -302,6 +315,7 @@ class AdminClaimVerificationView(APIView):
                     "event_date": lost_report.event_date,
                     "event_time": lost_report.event_time,
                     "status": lost_report.status,
+                    "image_url": lost_image_url,
                 },
 
                 "found_report": {
