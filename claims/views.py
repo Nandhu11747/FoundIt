@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Claim, ClaimEvidence,ClaimVerification
 from reports.models import Report, Match
 from django.utils import timezone
+from django.db import transaction
 
 class CreateClaimView(APIView):
 
@@ -20,7 +21,10 @@ class CreateClaimView(APIView):
             "unique_identification_details"
         )
         description = request.data.get("description")
+        match_id = request.data.get("match_id")
 
+        print("DEBUG request.data:", request.data)
+        print("DEBUG match_id:", match_id)
 
         if not report_id:
             return Response(
@@ -28,6 +32,23 @@ class CreateClaimView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        if not match_id:
+            return Response(
+                {"error": "Match ID is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            match = Match.objects.get(
+                id=match_id,
+                status="pending"
+            )
+        except Match.DoesNotExist:
+            return Response(
+                {"error": "Valid pending match not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+                
         try:
             report = Report.objects.get(
                 id=report_id,
@@ -45,6 +66,15 @@ class CreateClaimView(APIView):
                 {"error": "You can only claim your own lost report."},
                 status=status.HTTP_403_FORBIDDEN
             )
+
+        
+        # Make sure the selected match belongs to this Lost Report
+        if match.lost_report_id != report.id:
+            return Response(
+                {"error": "The selected match does not belong to this lost report."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
 
         # Make sure a potential match exists
         match_exists = Match.objects.filter(
@@ -74,6 +104,7 @@ class CreateClaimView(APIView):
             )
         claim = Claim.objects.create(
             report=report,
+            match=match,
             claimant=request.user,
             unique_identification_details=unique_details,
             status="pending"
@@ -235,11 +266,8 @@ class AdminClaimVerificationView(APIView):
         lost_report = claim.report
 
         # Find the matching found report
-        match = Match.objects.filter(
-            lost_report=lost_report
-        ).select_related(
-            "found_report"
-        ).order_by("-match_score").first()
+        # Get the exact match linked to this claim
+        match = claim.match
 
         if not match:
             return Response(
@@ -316,6 +344,9 @@ class AdminClaimVerificationView(APIView):
                     "event_time": lost_report.event_time,
                     "status": lost_report.status,
                     "image_url": lost_image_url,
+                    "tags": list(
+                        lost_report.tags.values_list("tag", flat=True)
+                    ),
                 },
 
                 "found_report": {
@@ -331,6 +362,9 @@ class AdminClaimVerificationView(APIView):
                     "event_time": found_report.event_time,
                     "status": found_report.status,
                     "image_url": found_image_url,
+                    "tags": list(
+                        found_report.tags.values_list("tag", flat=True)
+                    ),
                 },
 
                 "finder": {
@@ -373,6 +407,99 @@ class AdminClaimVerificationView(APIView):
                 },
 
                 "evidence": evidence_list,
+            },
+            status=status.HTTP_200_OK
+        )
+class ApproveClaimView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @transaction.atomic
+    def post(self, request, claim_id):
+
+        if not request.user.is_superuser:
+            return Response(
+                {"error": "Admin access required."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        try:
+            claim = Claim.objects.get(id=claim_id)
+        except Claim.DoesNotExist:
+            return Response(
+                {"error": "Claim not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if claim.status != "pending":
+            return Response(
+                {"error": "Only pending claims can be approved."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        claim.status = "approved"
+        claim.reviewed_at = timezone.now()
+        claim.save()
+
+        match = claim.match
+
+        if match:
+            match.status = "confirmed"
+            match.save()
+
+        return Response(
+            {
+                "message": "Claim approved successfully.",
+                "claim_id": claim.id,
+                "status": claim.status,
+                "match_status": match.status if match else None,
+            },
+            status=status.HTTP_200_OK
+        )
+    
+class RejectClaimView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, claim_id):
+
+        if not request.user.is_superuser:
+            return Response(
+                {"error": "Admin access required."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        try:
+            claim = Claim.objects.get(id=claim_id)
+        except Claim.DoesNotExist:
+            return Response(
+                {"error": "Claim not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if claim.status != "pending":
+            return Response(
+                {"error": "Only pending claims can be rejected."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        rejection_reason = request.data.get("rejection_reason")
+
+        if not rejection_reason:
+            return Response(
+                {"error": "Rejection reason is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        claim.status = "rejected"
+        claim.rejection_reason = rejection_reason
+        claim.reviewed_at = timezone.now()
+        claim.save()
+
+        return Response(
+            {
+                "message": "Claim rejected successfully.",
+                "claim_id": claim.id,
+                "status": claim.status,
+                "rejection_reason": claim.rejection_reason,
             },
             status=status.HTTP_200_OK
         )

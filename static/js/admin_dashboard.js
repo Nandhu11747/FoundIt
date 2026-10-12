@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const data = await response.json();
 
+        console.log("PENDING CLAIMS:", data);
+
         if (!response.ok) {
             console.error("Failed to load pending claims:", data);
             return;
@@ -76,6 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 </span>
             `;
 
+            row.style.cursor = "pointer";
+
+            row.onclick = function () {
+
+                window.location.href =
+                    `/claims/admin/page/${claim.claim_id}/`;
+            };
+            
             container.appendChild(row);
         });
     }

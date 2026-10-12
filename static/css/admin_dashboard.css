@@ -595,6 +595,12 @@ a {
     border-bottom: 1px solid #e8eaed;
     font-size: 9px;
     color: #454c57;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.verification-row:hover {
+    background-color: #f8f9fc;
 }
 
 .verification-row:last-child {

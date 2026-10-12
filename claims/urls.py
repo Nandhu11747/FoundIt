@@ -1,8 +1,13 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-from .views import CreateClaimView, MatchDetailsView, AdminPendingClaimsView, AdminClaimVerificationView
-
+from .views import ( CreateClaimView, 
+                    MatchDetailsView, 
+                    AdminPendingClaimsView, 
+                    AdminClaimVerificationView,
+                    ApproveClaimView,
+                    RejectClaimView,
+)
 
 urlpatterns = [
     path(
@@ -40,5 +45,15 @@ urlpatterns = [
             template_name="admin_claim_verification.html"
         ),
         name="admin-claim-verification-page"
+    ),
+    path(
+        "admin/<int:claim_id>/approve/",
+        ApproveClaimView.as_view(),
+        name="admin-approve-claim",
+    ),
+    path(
+        "admin/<int:claim_id>/reject/",
+        RejectClaimView.as_view(),
+        name="admin-reject-claim",
     ),
 ]

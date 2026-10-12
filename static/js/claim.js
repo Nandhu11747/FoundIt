@@ -270,6 +270,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                 );
 
                 formData.append(
+                    "match_id",
+                    matchId
+                );
+
+                formData.append(
                     "unique_identification_details",
                     uniqueDetails.value.trim()
                 );
@@ -288,6 +293,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     );
                 }
 
+                console.log("Selected match ID:", matchId);
+                console.log("FormData match ID:", formData.get("match_id"));
 
                 const response =
                     await authenticatedFetch(

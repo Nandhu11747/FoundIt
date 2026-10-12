@@ -168,3 +168,19 @@ class Match(models.Model):
             f"Match: Lost #{self.lost_report.id} "
             f"<-> Found #{self.found_report.id}"
         )
+
+
+class ReportTag(models.Model):
+
+    report = models.ForeignKey(
+        Report,
+        on_delete=models.CASCADE,
+        related_name="tags"
+    )
+
+    tag = models.CharField(
+        max_length=100
+    )
+
+    def __str__(self):
+        return self.tag

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Report, ReportImage, Match
+from .models import Report, ReportImage, Match,ReportTag
 from .serializers import ReportSerializer
 from .matching import (
     create_matches_for_found_report,
@@ -28,6 +28,26 @@ class CreateReportView(APIView):
                 user=request.user,
                 status=serializer.validated_data["type"]
             )
+
+            
+        tags = request.data.get("tags", [])
+
+        # Handle tags sent through FormData
+        if hasattr(request.data, "getlist"):
+            tags = request.data.getlist("tags")
+
+        # Handle a single tag or tags sent as JSON
+        if isinstance(tags, str):
+            tags = [tags]
+
+        if isinstance(tags, list):
+            for tag in tags:
+                if isinstance(tag, str) and tag.strip():
+                    ReportTag.objects.create(
+                        report=report,
+                        tag=tag.strip()
+                    )
+
 
             private_details = request.data.get(
                 "private_identification_details"
@@ -94,12 +114,15 @@ class MyMatchesView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+       
         matches = Match.objects.filter(
-            lost_report__user=request.user
+            lost_report__user=request.user,
+            status="pending"
         ).select_related(
             "lost_report",
             "found_report"
         ).order_by("-match_score")
+
 
         data = []
 

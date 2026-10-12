@@ -389,7 +389,7 @@
 
 
 
-                    <!-- BRAND + COLOR + CONDITION -->
+                    <!-- BRAND + COLOR + CONDITION + TAGS -->
 
                     <div class="form-row found-details-row">
 
@@ -494,6 +494,24 @@
                             </select>
 
                         </div>
+
+                        <!-- TAGS -->
+                        <div class="form-group">
+                            <label for="foundTags">Keywords & Tags</label>
+
+                            <div class="tag-input">
+                                <input
+                                    type="text"
+                                    id="foundTags"
+                                    placeholder="Add tags like 'black', 'leather', 'scratched'"
+                                />
+
+                                <button type="button" id="addFoundTagBtn">Add</button>
+                            </div>
+
+                            <div id="foundTagContainer" class="tag-container"></div>
+                        </div>
+
 
                     </div>
 
@@ -851,6 +869,12 @@
                 <span>ITEM PHOTO</span>
                 <strong id="reviewFoundPhoto">—</strong>
             </div>
+            
+            <div class="review-item">
+                <span>KEYWORDS & TAGS</span>
+                <strong id="reviewFoundTags">—</strong>
+            </div>
+
 
         </div>
 

@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-from reports.models import Report
+from reports.models import Report, Match
 
 
 class Claim(models.Model):
@@ -18,6 +18,14 @@ class Claim(models.Model):
         Report,
         on_delete=models.CASCADE,
         related_name="claims"
+    )
+
+    match = models.ForeignKey(
+        Match,
+        on_delete=models.CASCADE,
+        related_name="claims",
+        null=True,
+        blank=True
     )
 
     claimant = models.ForeignKey(

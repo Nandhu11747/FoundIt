@@ -65,6 +65,10 @@ function renderClaimData(data) {
     const match = data.match;
     const verification = data.verification;
 
+    // Render tags for each report
+    renderTags("claimantTags", lostReport.tags);
+    renderTags("finderTags", foundReport.tags);
+
 
     /* =====================================================
        MATCH INFORMATION
@@ -256,4 +260,105 @@ function formatStatus(status) {
         .replace(/\b\w/g, function (letter) {
             return letter.toUpperCase();
         });
+}
+
+/* =========================================================
+   APPROVE CLAIM
+   ========================================================= */
+
+async function approveClaim(claimId) {
+
+    try {
+
+        const response = await authenticatedFetch(
+            `/claims/admin/${claimId}/approve/`,
+            {
+                method: "POST"
+            }
+        );
+
+        if (!response) {
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                data.error ||
+                "Failed to approve claim."
+            );
+
+            return;
+        }
+
+        alert("Claim approved successfully.");
+
+        window.location.href =
+            "/admin-dashboard/";
+
+    } catch (error) {
+
+        console.error(
+            "Error approving claim:",
+            error
+        );
+
+        alert(
+            "Something went wrong while approving the claim."
+        );
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const approveButton =
+        document.getElementById("approveClaimBtn");
+
+    if (approveButton) {
+
+        approveButton.addEventListener(
+            "click",
+            function () {
+
+                const pathParts =
+                    window.location.pathname.split("/");
+
+                const claimId =
+                    pathParts[pathParts.length - 2];
+
+                if (!claimId) {
+                    console.error("Claim ID not found.");
+                    return;
+                }
+
+                approveClaim(claimId);
+            }
+        );
+    }
+});
+
+
+function renderTags(containerId, tags) {
+
+    const container =
+        document.getElementById(containerId);
+
+    if (!container) {
+        return;
+    }
+
+    container.replaceChildren();
+
+    if (!Array.isArray(tags) || tags.length === 0) {
+        container.textContent = "No tags provided.";
+        return;
+    }
+
+    tags.forEach(function (tag) {
+        const span = document.createElement("span");
+        span.textContent = tag;
+        container.appendChild(span);
+    });
 }

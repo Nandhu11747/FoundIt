@@ -124,6 +124,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById("reviewFoundPhoto").textContent =
                 "No photo selected";
         }
+
+        // Display tags in the review section
+        const reviewTags = document.getElementById("reviewFoundTags");
+
+        reviewTags.textContent = reportTags.length
+            ? reportTags.join(", ")
+            : "No tags added";
     }
 
 
@@ -174,6 +181,57 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         }
     );
+
+
+    // =========================
+    // FOUND REPORT TAGS
+    // =========================
+
+    const foundTagInput =
+        document.getElementById("foundTags");
+
+    const addFoundTagBtn =
+        document.getElementById("addFoundTagBtn");
+
+    const foundTagContainer =
+        document.getElementById("foundTagContainer");
+
+    const reportTags = [];
+
+    addFoundTagBtn.addEventListener("click", function () {
+
+        console.log("Found tag input:", foundTagInput);
+        console.log("Add tag button:", addFoundTagBtn);
+        console.log("Tag container:", foundTagContainer);
+
+        const tag = foundTagInput.value.trim();
+
+        if (!tag) {
+            return;
+        }
+
+        // Prevent duplicate tags (case-insensitive)
+        const alreadyExists = reportTags.some(function (existingTag) {
+            return existingTag.toLowerCase() === tag.toLowerCase();
+        });
+
+        if (alreadyExists) {
+            foundTagInput.value = "";
+            return;
+        }
+
+        reportTags.push(tag);
+
+        const tagElement = document.createElement("span");
+        tagElement.className = "tag";
+        tagElement.textContent = tag;
+
+        foundTagContainer.appendChild(tagElement);
+
+        foundTagInput.value = "";
+        foundTagInput.focus();
+    });
+
 
 // =========================
 // SUBMIT FOUND REPORT
@@ -235,6 +293,10 @@ submitButton.addEventListener("click", async function () {
     try {
 
         const formData = new FormData();
+
+        reportTags.forEach(function (tag) {
+            formData.append("tags", tag);
+        });
 
         formData.append(
             "item_name",

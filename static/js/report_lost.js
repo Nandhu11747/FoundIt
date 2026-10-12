@@ -257,6 +257,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const tagContainer =
         document.getElementById("tagContainer");
 
+    const reportTags = [];
+
 
     addTagBtn.addEventListener(
         "click",
@@ -280,6 +282,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             tagContainer.appendChild(
                 tagElement
             );
+
+            reportTags.push(tag);
 
             tagInput.value = "";
 
@@ -342,7 +346,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     document.getElementById("reward").value || "0",
 
                 private_identification_details:
-                    document.getElementById("privateDetails").value
+                    document.getElementById("privateDetails").value,
+
+                tags: reportTags
 
             };
 
