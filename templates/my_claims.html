@@ -1,0 +1,143 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Claims | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/my_claims.css' %}">
+</head>
+<body>
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-mark">⌕</div>
+                <span>FoundIt</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <p class="nav-label">MENU</p>
+
+                <a href="/dashboard/" class="nav-item">
+                    <span class="nav-icon">⊞</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/reports/" class="nav-item">
+                    <span class="nav-icon">⌕</span>
+                    <span>Browse Items</span>
+                </a>
+
+                <a href="/claims/page/my/" class="nav-item active">
+                    <span class="nav-icon">♧</span>
+                    <span>My Claims</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♧</span>
+                    <span>Notifications</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">◎</span>
+                    <span>Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+                <a href="#" class="nav-item nav-item_logout" id="logoutBtn">
+                    <span class="nav-icon">↪</span>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="breadcrumb">
+                    <a href="/dashboard/">Dashboard</a>
+                    <span class="breadcrumb-arrow">›</span>
+                    <strong>My Claims</strong>
+                </div>
+
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div class="user-details">
+                            <strong id="userName">User</strong>
+                            <span>Active Member</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content claims-page">
+
+                <section class="claims-welcome">
+                    <h1>My Claims</h1>
+                    <p>Track your submitted claims and verification progress.</p>
+                </section>
+
+                <section class="claims-stats">
+                    <div class="claim-stat-card">
+                        <span>Total Claims</span>
+                        <strong id="totalClaims">0</strong>
+                    </div>
+
+                    <div class="claim-stat-card">
+                        <span>Pending</span>
+                        <strong id="pendingClaims">0</strong>
+                    </div>
+
+                    <div class="claim-stat-card">
+                        <span>Approved</span>
+                        <strong id="approvedClaims">0</strong>
+                    </div>
+
+                    <div class="claim-stat-card">
+                        <span>Rejected</span>
+                        <strong id="rejectedClaims">0</strong>
+                    </div>
+                </section>
+
+                <section class="claims-list-section">
+                    <div class="claims-section-heading">
+                        <div>
+                            <h2>Your Submitted Claims</h2>
+                            <p>View each claim and its current status.</p>
+                        </div>
+                    </div>
+
+                    <p id="claimsLoading">Loading your claims...</p>
+
+                    <div id="claimsList"></div>
+
+                    <div id="claimsEmpty" hidden>
+                        <h3>No claims yet</h3>
+                        <p>When you submit a claim, it will appear here.</p>
+                        <a href="/dashboard/">Return to Dashboard</a>
+                    </div>
+
+                    <p id="claimsError" role="alert" hidden>
+                        Unable to load your claims. Please try again.
+                    </p>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/auth.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="{% static 'js/my_claims.js' %}"></script>
+</body>
+</html>

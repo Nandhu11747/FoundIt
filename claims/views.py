@@ -135,6 +135,44 @@ class CreateClaimView(APIView):
             status=status.HTTP_201_CREATED
         )
 
+class MyClaimsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        claims = Claim.objects.filter(
+            claimant=request.user
+        ).select_related(
+            "report",
+            "match",
+            "match__found_report"
+        ).order_by("-created_at")
+
+        data = []
+
+        for claim in claims:
+            match = claim.match
+
+            data.append({
+                "claim_id": claim.id,
+                "status": claim.status,
+                "created_at": claim.created_at,
+                "unique_identification_details":
+                    claim.unique_identification_details,
+                "rejection_reason": claim.rejection_reason,
+                "lost_report": {
+                    "id": claim.report.id,
+                    "item_name": claim.report.item_name,
+                },
+                "found_report": {
+                    "id": match.found_report.id,
+                    "item_name": match.found_report.item_name,
+                } if match else None,
+                "match_status": match.status if match else None,
+            })
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
 class MatchDetailsView(APIView):
 
     permission_classes = [IsAuthenticated]

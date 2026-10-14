@@ -362,3 +362,96 @@ function renderTags(containerId, tags) {
         container.appendChild(span);
     });
 }
+
+
+/* =========================================================
+   REJECT CLAIM
+   ========================================================= */
+
+async function rejectClaim(claimId, rejectionReason) {
+    try {
+        const response = await authenticatedFetch(
+            `/claims/admin/${claimId}/reject/`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    rejection_reason: rejectionReason
+                })
+            }
+        );
+
+        if (!response) {
+            return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error || "Failed to reject claim.");
+            return;
+        }
+
+        alert("Claim rejected successfully.");
+
+        window.location.href = "/admin-dashboard/";
+
+    } catch (error) {
+        console.error("Error rejecting claim:", error);
+        alert("Something went wrong while rejecting the claim.");
+    }
+}
+
+
+/* =========================================================
+   REJECT BUTTON EVENTS
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const rejectButton =
+        document.getElementById("rejectClaimBtn");
+
+    const rejectReasonSection =
+        document.getElementById("rejectReasonSection");
+
+    const rejectionReasonInput =
+        document.getElementById("rejectionReason");
+
+    const confirmRejectButton =
+        document.getElementById("confirmRejectBtn");
+
+    const cancelRejectButton =
+        document.getElementById("cancelRejectBtn");
+
+    if (!rejectButton || !rejectReasonSection) {
+        console.error("Reject form elements not found.");
+        return;
+    }
+
+    rejectButton.addEventListener("click", function () {
+        rejectReasonSection.hidden = false;
+        rejectionReasonInput.focus();
+    });
+
+    cancelRejectButton.addEventListener("click", function () {
+        rejectReasonSection.hidden = true;
+        rejectionReasonInput.value = "";
+    });
+
+    confirmRejectButton.addEventListener("click", function () {
+        const claimId =
+            window.location.pathname.split("/").at(-2);
+
+        const reason = rejectionReasonInput.value.trim();
+
+        if (!reason) {
+            alert("Please enter a rejection reason.");
+            rejectionReasonInput.focus();
+            return;
+        }
+
+        rejectClaim(claimId, reason);
+    });
+});

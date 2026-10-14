@@ -3,7 +3,9 @@ from django.urls import path
 from .views import (
     CreateReportView,
     MyReportsView,
-    MyMatchesView
+    MyMatchesView,
+    BrowseItemsView,
+    FoundReportMatchesView,
 )
 from django.views.generic import TemplateView
 
@@ -43,6 +45,32 @@ urlpatterns = [
         ),
         name="report-found"
     ),
+
+    path(
+        "browse/",
+        BrowseItemsView.as_view(),
+        name="browse-items"
+    ),
+
+    path(
+        "browse/page/",
+        TemplateView.as_view(template_name="browse_items.html"),
+        name="browse-items-page",
+    ),
+    path(
+        "item/<int:report_id>/",
+        TemplateView.as_view(
+            template_name="item_details.html"
+        ),
+        name="item-details-page",
+    ),
+
+    path(
+        "item/<int:report_id>/matches/",
+        FoundReportMatchesView.as_view(),
+        name="found-report-matches",
+    ),
+
 
 
 ]

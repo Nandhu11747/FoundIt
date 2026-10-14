@@ -1,0 +1,168 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details | FoundIt</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/item_details.css' %}">
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-label">MENU</p>
+            <a href="/dashboard/" class="nav-item">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/reports/browse/page/" class="nav-item active">
+                <span class="nav-icon">⌕</span>
+                <span>Browse Items</span>
+            </a>
+            <a href="/claims/page/my/" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>My Claims</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>Notifications</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="nav-icon">◎</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+            <a href="#" class="nav-item nav-item_logout" id="logoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="breadcrumb">
+                <a href="/dashboard/">Dashboard</a>
+                <span class="breadcrumb-arrow">›</span>
+                <a href="/reports/browse/page/">Browse Items</a>
+                <span class="breadcrumb-arrow">›</span>
+                <strong>Item Details</strong>
+            </div>
+        </header>
+
+        <div class="item-details-page">
+            <a class="back-link" href="/reports/browse/page/">
+                ← Back to Browse Items
+            </a>
+
+            <p id="detailsLoading">Loading item details...</p>
+            <p id="detailsError" role="alert" hidden>
+                Unable to load this item. It may not exist.
+            </p>
+
+            <section id="itemDetails" hidden>
+                <div class="details-card">
+                    <div class="details-image-wrap">
+                        <img id="detailImage" alt="Reported item">
+                        <div id="imagePlaceholder" hidden>
+                            No image available
+                        </div>
+                    </div>
+
+                    <div class="details-content">
+                        <span id="detailType" class="item-type"></span>
+                        <p id="detailId" class="detail-id"></p>
+                        <h1 id="detailName"></h1>
+                        <p id="detailDescription"></p>
+
+                        <div class="detail-fields">
+                            <div>
+                                <span>Category</span>
+                                <strong id="detailCategory"></strong>
+                            </div>
+                            <div>
+                                <span>Brand</span>
+                                <strong id="detailBrand"></strong>
+                            </div>
+                            <div>
+                                <span>Color</span>
+                                <strong id="detailColor"></strong>
+                            </div>
+                            <div>
+                                <span>Condition</span>
+                                <strong id="detailCondition"></strong>
+                            </div>
+                            <div>
+                                <span>Location</span>
+                                <strong id="detailLocation"></strong>
+                            </div>
+                            <div>
+                                <span>Reported date</span>
+                                <strong id="detailDate"></strong>
+                            </div>
+                        </div>
+
+                        <div id="detailTags" class="detail-tags"></div>
+
+                                                
+                            <div id="matchSection" hidden>
+                                <h2>Potential Match</h2>
+
+                                <p id="matchLoading" hidden>Checking your lost reports...</p>
+
+                                <div id="matchResult" hidden>
+                                    <p>
+                                        Your lost report:
+                                        <strong id="matchedLostItem"></strong>
+                                    </p>
+
+                                    <div class="match-score">
+                                        <span>Match score</span>
+                                        <strong id="matchScore"></strong>
+                                    </div>
+
+                                    <div class="match-score-track">
+                                        <div id="matchScoreBar"></div>
+                                    </div>
+
+                                    <p id="matchStatus"></p>
+
+                                    <button id="claimAction" type="button" hidden>
+                                        Claim This Item
+                                    </button>
+                                </div>
+
+                                <p id="noMatchMessage" hidden>
+                                    No matching lost reports were found for your account yet.
+                                </p>
+
+                                <p id="matchError" hidden>
+                                    Unable to check potential matches. Please try again later.
+                                </p>
+                            </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/item_details.js' %}"></script>
+</body>
+</html>

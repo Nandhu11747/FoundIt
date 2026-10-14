@@ -1,0 +1,166 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Items | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/browse_items.css' %}">
+</head>
+<body>
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-label">MENU</p>
+
+            <a href="/dashboard/" class="nav-item">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/reports/browse/" class="nav-item active">
+                <span class="nav-icon">⌕</span>
+                <span>Browse Items</span>
+            </a>
+
+            <a href="/claims/page/my/" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>My Claims</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>Notifications</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">◎</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+            <a href="#" class="nav-item nav-item_logout" id="logoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main page -->
+    <main class="main-content">
+        <header class="top-header">
+            <div class="breadcrumb">
+                <a href="/dashboard/">Dashboard</a>
+                <span class="breadcrumb-arrow">›</span>
+                <strong>Browse Items</strong>
+            </div>
+
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <strong id="userName">User</strong>
+                        <span>Active Member</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="browse-layout">
+
+            <!-- Filters -->
+            <aside class="filter-panel">
+                <div class="filter-heading">
+                    <h3>Filter Results</h3>
+                    <button type="button" id="resetFilters">Reset All</button>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Category</h4>
+                    <label><input type="checkbox" value="Electronics" class="category-filter"> Electronics</label>
+                    <label><input type="checkbox" value="Accessories" class="category-filter"> Accessories</label>
+                    <label><input type="checkbox" value="Personal Item" class="category-filter"> Personal Items</label>
+                    <label><input type="checkbox" value="Keys" class="category-filter"> Keys</label>
+                    <label><input type="checkbox" value="Documents" class="category-filter"> Documents</label>
+                    <label><input type="checkbox" value="Clothing" class="category-filter"> Clothing</label>
+                    <label><input type="checkbox" value="General" class="category-filter"> General</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Status</h4>
+                    <label><input type="checkbox" value="lost" class="status-filter" checked> Lost</label>
+                    <label><input type="checkbox" value="found" class="status-filter" checked> Found</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Search by date</h4>
+                    <select id="dateFilter">
+                        <option value="all">All dates</option>
+                        <option value="7">Last 7 days</option>
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                    </select>
+                </div>
+            </aside>
+
+            <!-- Results -->
+            <section class="browse-results">
+                <div class="browse-heading">
+                    <div>
+                        <h1>Browse Items</h1>
+                        <p id="resultsCount">Loading reports...</p>
+                    </div>
+
+                    <div class="browse-controls">
+                        <input
+                            type="search"
+                            id="itemSearch"
+                            placeholder="Search by item name, brand, or ID..."
+                        >
+
+                        <button type="button" id="gridViewBtn" aria-label="Grid view">▦</button>
+                        <button type="button" id="listViewBtn" aria-label="List view">☰</button>
+                    </div>
+                </div>
+
+                <p id="browseError" role="alert" hidden>
+                    Unable to load reports. Please refresh and try again.
+                </p>
+
+                <div id="itemsContainer" class="items-grid"></div>
+
+                <div id="emptyResults" hidden>
+                    <h3>No items found</h3>
+                    <p>Try changing your search or filters.</p>
+                </div>
+
+                <div class="pagination">
+                    <button type="button" id="prevPage">Previous</button>
+                    <span id="pageInfo">Page 1</span>
+                    <button type="button" id="nextPage">Next</button>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/browse_items.js' %}"></script>
+</body>
+</html>

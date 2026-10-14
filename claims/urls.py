@@ -7,6 +7,7 @@ from .views import ( CreateClaimView,
                     AdminClaimVerificationView,
                     ApproveClaimView,
                     RejectClaimView,
+                    MyClaimsView,
 )
 
 urlpatterns = [
@@ -56,4 +57,12 @@ urlpatterns = [
         RejectClaimView.as_view(),
         name="admin-reject-claim",
     ),
+    path("my/", MyClaimsView.as_view(), name="my_claims"),
+
+    path(
+        "page/my/",
+        TemplateView.as_view(template_name="my_claims.html"),
+        name="my-claims-page",
+),
+    
 ]

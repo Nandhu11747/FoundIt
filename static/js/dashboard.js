@@ -195,79 +195,90 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     function renderMatch() {
-
         const match = matches[currentMatchIndex];
-
         const score = Number(match.match_score);
 
-        let confidenceText = "Potential Match";
+        let confidenceText = "POTENTIAL MATCH";
+        let confidenceClass = "potential";
 
         if (score >= 90) {
             confidenceText = "HIGH CONFIDENCE MATCH";
+            confidenceClass = "high";
         } else if (score >= 70) {
             confidenceText = "GOOD MATCH";
+            confidenceClass = "good";
         }
 
+        const safeText = (value) => {
+            const element = document.createElement("span");
+            element.textContent = value ?? "Not provided";
+            return element.innerHTML;
+        };
+
         matchCardContainer.innerHTML = `
-            <div class="dynamic-match-card">
+            <article class="dynamic-match-card">
 
                 <div class="dynamic-match-top">
-
-                    <span class="dynamic-match-badge">
+                    <span class="dynamic-match-badge ${confidenceClass}">
+                        <span class="match-badge-dot"></span>
                         ${confidenceText}
                     </span>
 
-                    <span class="dynamic-match-score">
-                        ${score}%
-                    </span>
-
+                    <div class="dynamic-match-score">
+                        <strong>${safeText(score)}%</strong>
+                        <span>Match score</span>
+                    </div>
                 </div>
 
-                <h3>
-                    Potential match for "${match.item_name}"
-                </h3>
+                <div class="dynamic-match-content">
+                    <h3>
+                        Potential match for
+                        <span class="match-item-name">"${safeText(match.item_name)}"</span>
+                    </h3>
 
-                <p>
-                    A found report appears to match your lost item.
-                </p>
+                    <p class="dynamic-match-description">
+                        A found report appears to match your lost item.
+                    </p>
 
-                <div class="dynamic-match-details">
+                    <div class="dynamic-match-details">
+                        <span>
+                            <span class="match-detail-icon">⌖</span>
+                            ${safeText(match.location)}
+                        </span>
 
-                    <span>
-                        ◉ ${match.location}
-                    </span>
+                        <span>
+                            <span class="match-detail-icon">▦</span>
+                            ${safeText(match.event_date)}
+                        </span>
 
-                    <span>
-                        ● ${match.event_date}
-                    </span>
+                        <span>
+                            <span class="match-detail-icon">#</span>
+                            Report ${safeText(match.found_report_id)}
+                        </span>
+                    </div>
 
-                    <span>
-                        Report #${match.found_report_id}
-                    </span>
+                    <div class="dynamic-match-bottom">
+                        <span class="dynamic-match-status">
+                            <span class="status-dot"></span>
+                            ${safeText(match.status)}
+                        </span>
 
+                        <button
+                            type="button"
+                            class="view-match-btn"
+                            onclick="openClaimPage(${Number(match.id)})"
+                        >
+                            View &amp; Verify Match
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
                 </div>
-
-                <div class="dynamic-match-status">
-                    Status: ${match.status}
-                </div>
-
-                <div class="dynamic-match-action">
-                    <button
-                        type="button"
-                        class="view-match-btn"
-                        onclick="openClaimPage(${match.id})"
-                    >
-                        View & Verify Match
-                        <span>→</span>
-                    </button>
-                </div>
-
-            </div>
+            </article>
         `;
 
         updateDots();
     }
-
+    
 
     function renderDots() {
 
