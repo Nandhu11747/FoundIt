@@ -18,6 +18,135 @@ document.addEventListener("DOMContentLoaded", async function () {
     const step3 = document.getElementById("step3");
     const step4 = document.getElementById("step4");
 
+    
+    /* =========================
+       LOCATION MAP AND GPS
+    ========================= */
+
+    const locationInput = document.getElementById("location");
+    const latitudeInput = document.getElementById("latitude");
+    const longitudeInput = document.getElementById("longitude");
+    const locationStatus = document.getElementById("locationStatus");
+    const useCurrentLocationBtn = document.getElementById(
+        "useCurrentLocationBtn"
+    );
+
+    let selectedCoordinates = null;
+    let locationMap = null;
+    let locationMarker = null;
+
+    if (typeof L !== "undefined") {
+        locationMap = L.map("locationMap").setView([10.8505, 76.2711], 7);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(locationMap);
+
+        locationMap.on("click", function (event) {
+            selectLocation(
+                event.latlng.lat,
+                event.latlng.lng
+            );
+        });
+    } else {
+        locationStatus.textContent =
+            "Map failed to load. Check your internet connection and refresh.";
+    }
+
+    async function selectLocation(lat, lng) {
+        selectedCoordinates = {
+            latitude: lat,
+            longitude: lng
+        };
+
+        latitudeInput.value = lat.toFixed(7);
+        longitudeInput.value = lng.toFixed(7);
+
+        if (locationMap) {
+            if (locationMarker) {
+                locationMarker.setLatLng([lat, lng]);
+            } else {
+                locationMarker = L.marker([lat, lng], {
+                    draggable: true
+                }).addTo(locationMap);
+
+                locationMarker.on("dragend", function () {
+                    const position = locationMarker.getLatLng();
+                    selectLocation(position.lat, position.lng);
+                });
+            }
+
+            locationMap.setView([lat, lng], 16);
+        }
+
+        locationInput.value =
+            `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+        locationStatus.textContent = "Getting location name...";
+
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lng)}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Location lookup failed");
+            }
+
+            const data = await response.json();
+
+            if (data.display_name) {
+                locationInput.value = data.display_name;
+                locationStatus.textContent =
+                    "Location selected. You can move the pin to adjust it.";
+            } else {
+                locationStatus.textContent =
+                    "Coordinates selected. No place name was found.";
+            }
+        } catch (error) {
+            console.error("Reverse geocoding error:", error);
+            locationStatus.textContent =
+                "Coordinates selected, but the place name could not be loaded.";
+        }
+    }
+
+    useCurrentLocationBtn.addEventListener("click", function () {
+        if (!navigator.geolocation) {
+            locationStatus.textContent =
+                "Your browser does not support GPS location.";
+            return;
+        }
+
+        locationStatus.textContent =
+            "Getting your current location...";
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                selectLocation(
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+            },
+            function (error) {
+                const messages = {
+                    1: "Location permission was denied. Allow location access in your browser settings.",
+                    2: "Your current location is unavailable. Try selecting a point on the map.",
+                    3: "Location request timed out. Please try again."
+                };
+
+                locationStatus.textContent =
+                    messages[error.code] ||
+                    "Could not get your location.";
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+    });
+
 
     function showStep(stepNumber) {
 
@@ -87,6 +216,7 @@ document.addEventListener("DOMContentLoaded", async function () {
        STEP 2 → STEP 3
     ========================= */
 
+    
     document
         .getElementById("locationNextBtn")
         .addEventListener("click", function () {
@@ -97,12 +227,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             const date =
                 document.getElementById("eventDate").value;
 
-            if (!location || !date) {
-
-                alert(
-                    "Please enter the location and date."
-                );
-
+            if (!location || !selectedCoordinates || !date) {
+                alert("Please select a location on the map and enter the date.");
                 return;
             }
 
@@ -336,6 +462,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 location:
                     document.getElementById("location").value,
 
+                latitude: Number(latitudeInput.value),
+                longitude: Number(longitudeInput.value),
+
                 event_date:
                     document.getElementById("eventDate").value,
 
@@ -355,6 +484,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const message =
                 document.getElementById("reportMessage");
+
+            // Check whether a map location was selected
+            if (!selectedCoordinates) {
+                message.textContent =
+                    "Please select a location on the map first.";
+                return;
+            }
 
             try {
 

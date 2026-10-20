@@ -22,6 +22,8 @@ from django.views.generic import TemplateView
 from users.models import User
 from reports.models import Report
 from claims.models import Claim
+from django.shortcuts import get_object_or_404
+from django.db.models import Count, Q
 
 import redis
 import json
@@ -346,3 +348,84 @@ class AdminDashboardStatsView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+
+class AdminUserListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not request.user.is_superuser:
+            return Response(
+                {"error": "Admin access required."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        users = User.objects.annotate(
+            reports_count=Count("reports", distinct=True),
+            claims_count=Count("claims", distinct=True),
+        ).order_by("-created_at")
+
+        user_list = []
+
+        for user in users:
+            user_list.append({
+                "id": user.id,
+                "full_name": user.full_name,
+                "email": user.email,
+                "phone": user.phone,
+                "status": user.status,
+                "is_superuser": user.is_superuser,
+                "created_at": user.created_at,
+                "reports_count": user.reports_count,
+                "claims_count": user.claims_count,
+            })
+
+        return Response(
+            {"users": user_list},
+            status=status.HTTP_200_OK
+        )
+
+
+class AdminUserStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id):
+        if not request.user.is_superuser:
+            return Response(
+                {"error": "Admin access required."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        target_user = get_object_or_404(User, id=user_id)
+
+        if target_user.is_superuser:
+            return Response(
+                {"error": "Admin accounts cannot be restricted here."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        new_status = request.data.get("status")
+
+        if new_status not in ["active", "restricted"]:
+            return Response(
+                {"error": "Status must be active or restricted."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        target_user.status = new_status
+        target_user.save(update_fields=["status"])
+
+        return Response(
+            {
+                "message": (
+                    "User restored successfully."
+                    if new_status == "active"
+                    else "User restricted successfully."
+                ),
+                "user_id": target_user.id,
+                "status": target_user.status,
+            },
+            status=status.HTTP_200_OK
+        )
+

@@ -1,5 +1,17 @@
 
-document.addEventListener("DOMContentLoaded", loadMyClaims);
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            logout();
+        });
+    }
+
+    loadMyClaims();
+});
+
 
 async function loadMyClaims() {
     const loading = document.getElementById("claimsLoading");

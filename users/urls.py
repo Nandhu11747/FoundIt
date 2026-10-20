@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import RegisterView, VerifyOTPView,ResendOTPView, LoginView, GoogleLoginSuccessView, UserMeView
 from rest_framework_simplejwt.views import TokenRefreshView
+from .views import AdminUserListView
+from .views import AdminUserStatusView
 
 
 urlpatterns = [
@@ -11,4 +13,6 @@ urlpatterns = [
     path("google-login-success/", GoogleLoginSuccessView.as_view(), name="google-login-success"),
     path("me/", UserMeView.as_view(), name="user-me"),
     path("token/refresh/",TokenRefreshView.as_view(),name="token-refresh"),
+    path("admin/users/",AdminUserListView.as_view(),name="admin-user-list"),
+    path("admin/users/<int:user_id>/status/",AdminUserStatusView.as_view(),name="admin-user-status"),
 ]

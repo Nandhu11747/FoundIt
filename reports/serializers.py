@@ -33,6 +33,8 @@ class ReportSerializer(serializers.ModelSerializer):
             "color",
             "condition",
             "location",
+            "latitude",
+            "longitude",
             "event_date",
             "event_time",
             "reward_offered",

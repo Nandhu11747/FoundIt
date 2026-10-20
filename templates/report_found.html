@@ -18,6 +18,7 @@
         rel="stylesheet"
         href="{% static 'css/report.css' %}"
     >
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 </head>
 
@@ -622,18 +623,36 @@
 
             <!-- LOCATION -->
 
+            
             <div class="form-group">
 
                 <label for="foundLocation">
                     FOUND LOCATION
                 </label>
 
+                <div class="location-actions">
+                    <button type="button" id="useFoundCurrentLocationBtn">
+                        ◎ Use My Current Location
+                    </button>
+                    <span>or select a location on the map</span>
+                </div>
+
+                <div id="foundLocationMap" class="location-map"></div>
+
+                <p id="foundLocationStatus" class="location-status" aria-live="polite">
+                    Choose a point on the map or use your current location.
+                </p>
+
                 <input
                     type="text"
                     id="foundLocation"
-                    placeholder="e.g. Kochi Metro Station"
+                    placeholder="Selected location will appear here"
+                    readonly
                     required
                 >
+
+                <input type="hidden" id="foundLatitude">
+                <input type="hidden" id="foundLongitude">
 
             </div>
 
@@ -971,7 +990,9 @@
 
 
 <script src="{% static 'js/auth.js' %}"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{% static 'js/report_found.js' %}">
+    
 </script>
 
 </body>

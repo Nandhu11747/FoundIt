@@ -1,0 +1,271 @@
+
+/* USER MANAGEMENT PAGE */
+
+.user-management-content {
+    max-width: 1250px;
+}
+
+.user-activity-section {
+    max-width: 100%;
+    margin: 20px auto 48px;
+    padding: 20px;
+    background: #f8f9fb;
+    border-radius: 7px;
+}
+
+.recent-user-activity {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.activity-empty {
+    background: #fff;
+    padding: 15px;
+    color: #8a909a;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.users-section {
+    width: 100%;
+}
+
+.users-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 0 4px;
+}
+
+.users-section-header h2 {
+    font-size: 18px;
+    color: #202938;
+    margin-bottom: 5px;
+}
+
+.users-section-header p {
+    font-size: 11px;
+    color: #8a909a;
+}
+
+.users-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.users-search {
+    width: 210px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    border: 1px solid #dfe2e7;
+    border-radius: 5px;
+    background: #fff;
+    color: #8a909a;
+}
+
+.users-search input {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 11px;
+}
+
+.status-filter {
+    height: 34px;
+    max-width: 140px;
+    padding: 0 9px;
+    border: 1px solid #dfe2e7;
+    border-radius: 5px;
+    background: #fff;
+    color: #374151;
+    font-size: 11px;
+}
+
+.users-table-card {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #dfe2e7;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(31, 41, 55, 0.10);
+    overflow: hidden;
+}
+
+.users-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.users-table thead {
+    background: #fafbfc;
+}
+
+.users-table th {
+    padding: 15px 12px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 700;
+    color: #858c97;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.users-table td {
+    padding: 14px 12px;
+    font-size: 11px;
+    color: #454c57;
+    border-bottom: 1px solid #edf0f3;
+    overflow-wrap: anywhere;
+}
+
+.users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.users-table tbody tr:hover {
+    background: #f8f9fc;
+}
+
+.user-name {
+    color: #202938 !important;
+    font-weight: 600;
+}
+
+.user-email {
+    color: #667085 !important;
+}
+
+.user-status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.user-status.active {
+    color: #087f5b;
+    background: #e4f7ee;
+}
+
+.user-status.restricted {
+    color: #b42318;
+    background: #feeceb;
+}
+
+.user-status.unknown {
+    color: #667085;
+    background: #f0f2f5;
+}
+
+.view-user-btn {
+    border: none;
+    border-radius: 4px;
+    background: #171a20;
+    color: #fff;
+    padding: 7px 13px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.view-user-btn:hover {
+    background: #343943;
+}
+
+.table-message {
+    padding: 30px !important;
+    text-align: center;
+    color: #8a909a !important;
+}
+
+.users-error {
+    padding: 14px;
+    color: #b42318;
+    background: #fff1f0;
+    font-size: 12px;
+    border-top: 1px solid #f5c2c0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+.user-status-action {
+    display: inline-block;
+    margin: 4px 0 4px 5px;
+    padding: 7px 10px;
+    border: 1px solid #dfe2e7;
+    border-radius: 4px;
+    background: #fff;
+    color: #374151;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.user-status-action:hover {
+    background: #f0f2f5;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .users-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .users-controls {
+        width: 100%;
+    }
+
+    .users-search {
+        flex: 1;
+    }
+}
+
+@media (max-width: 650px) {
+    .user-activity-section {
+        margin-bottom: 28px;
+        padding: 14px;
+    }
+
+    .users-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .users-search,
+    .status-filter {
+        width: 100%;
+        max-width: none;
+    }
+
+    .users-table {
+        min-width: 760px;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 12px 10px;
+    }
+}
+

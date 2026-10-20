@@ -1,5 +1,5 @@
+from notifications.models import Notification
 from urllib import request
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -478,6 +478,14 @@ class ApproveClaimView(APIView):
         claim.reviewed_at = timezone.now()
         claim.save()
 
+        Notification.objects.create(
+            recipient=claim.claimant,
+            title="Claim Approved",
+            message=f"Your claim #{claim.id} has been approved.",
+            notification_type="claim_approved",
+            related_url="/claims/page/my/",
+        )
+
         match = claim.match
 
         if match:
@@ -531,6 +539,17 @@ class RejectClaimView(APIView):
         claim.rejection_reason = rejection_reason
         claim.reviewed_at = timezone.now()
         claim.save()
+
+        Notification.objects.create(
+            recipient=claim.claimant,
+            title="Claim Rejected",
+            message=(
+                f"Your claim #{claim.id} was rejected. "
+                f"Reason: {rejection_reason}"
+            ),
+            notification_type="claim_rejected",
+            related_url="/claims/page/my/",
+        )
 
         return Response(
             {

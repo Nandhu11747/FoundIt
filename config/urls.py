@@ -67,6 +67,14 @@ urlpatterns = [
         name="admin-dashboard-stats"
     ),
 
+    path(
+        "admin-dashboard/users/",
+        TemplateView.as_view(
+            template_name="admin_user_management.html"
+        ),
+        name="admin-user-management"
+    ),
+
     path("auth/", include("users.urls")),
     path("accounts/", include("allauth.urls")),
 
@@ -75,6 +83,8 @@ urlpatterns = [
         include("reports.urls")
     ),
     path("claims/", include("claims.urls")),
+
+    path("notifications/", include("notifications.urls")),
 
 ]
 

@@ -58,9 +58,25 @@ class Report(models.Model):
         null=True
     )
 
+    
     location = models.CharField(
         max_length=150
     )
+
+    latitude = models.DecimalField(
+        max_digits=10,
+        decimal_places=7,
+        null=True,
+        blank=True
+    )
+
+    longitude = models.DecimalField(
+        max_digits=10,
+        decimal_places=7,
+        null=True,
+        blank=True
+    )
+
 
     event_date = models.DateField()
 

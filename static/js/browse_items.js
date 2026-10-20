@@ -8,6 +8,16 @@ const itemsPerPage = 9;
 let currentView = "grid";
 
 async function loadBrowseItems() {
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            logout();
+        });
+    }
+
     const container = document.getElementById("itemsContainer");
     const error = document.getElementById("browseError");
 

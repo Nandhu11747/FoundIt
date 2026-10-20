@@ -1,0 +1,196 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Management | FoundIt</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin_dashboard.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'css/admin_user_management.css' %}">
+</head>
+
+<body>
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+
+        <div class="sidebar-logo">
+            <div class="logo-icon">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <div class="sidebar-section-title">ADMIN PORTAL</div>
+
+        <nav class="admin-nav">
+            <a href="/admin-dashboard/" class="admin-nav-link">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/admin-dashboard/users/"
+               class="admin-nav-link active">
+                <span class="nav-icon">♙</span>
+                <span>User Management</span>
+            </a>
+
+            <a href="/claims/" class="admin-nav-link">
+                <span class="nav-icon">▣</span>
+                <span>Claims</span>
+            </a>
+
+            <a href="/reports/" class="admin-nav-link">
+                <span class="nav-icon">▱</span>
+                <span>Reports</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="admin-nav-link">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+            <a href="#" class="admin-nav-link logout-link"
+               id="adminLogoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+        <!-- TOP BAR -->
+        <header class="admin-topbar">
+
+            <div class="breadcrumb">
+                <a href="/admin-dashboard/">Dashboard</a>
+                <span class="breadcrumb-separator">›</span>
+                <strong>User Management</strong>
+            </div>
+
+            <div class="topbar-right">
+                <div class="admin-search">
+                    <span>⌕</span>
+                    <input type="text"
+                           placeholder="Search users..."
+                           id="topbarSearch">
+                </div>
+
+                <div class="admin-profile">
+                    <div class="profile-avatar" id="adminAvatar">AD</div>
+                    <div class="profile-info">
+                        <strong id="adminName">Admin</strong>
+                        <span>Admin Account</span>
+                    </div>
+                    <span class="profile-arrow">⌄</span>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <div class="admin-content user-management-content">
+
+            <div class="page-heading">
+                <div>
+                    <h1>User Management</h1>
+                    <p>Manage registered users and their account access.</p>
+                </div>
+                <button class="refresh-btn" id="refreshUsersBtn">
+                    ↻ &nbsp; Refresh Users
+                </button>
+            </div>
+
+            <!-- RECENT USER ACTIVITY -->
+            <section class="activity-section user-activity-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Recent User Activity</h2>
+                        <p>Recent actions across the FoundIt platform</p>
+                    </div>
+                </div>
+
+                <div id="recentUserActivity" class="recent-user-activity">
+                    <p class="activity-empty">
+                        Activity information will appear here when connected.
+                    </p>
+                </div>
+            </section>
+
+            <!-- USERS TABLE -->
+            <section class="users-section">
+
+                <div class="users-section-header">
+                    <div>
+                        <h2>Users</h2>
+                        <p id="userCount">Loading users...</p>
+                    </div>
+
+                    <div class="users-controls">
+                        <div class="users-search">
+                            <span>⌕</span>
+                            <input type="search"
+                                   id="userSearch"
+                                   placeholder="Search users..."
+                                   aria-label="Search users">
+                        </div>
+
+                        <select id="statusFilter"
+                                class="status-filter"
+                                aria-label="Filter users by status">
+                            <option value="all">All statuses</option>
+                            <option value="active">Active</option>
+                            <option value="restricted">Restricted</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="users-table-card">
+                    <div class="users-table-scroll">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>USER</th>
+                                    <th>EMAIL</th>
+                                    <th>REPORTS</th>
+                                    <th>CLAIMS</th>
+                                    <th>JOINED</th>
+                                    <th>STATUS</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="usersTableBody">
+                                <tr>
+                                    <td colspan="7" class="table-message">
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="usersError" class="users-error"
+                         role="alert" hidden></div>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/admin_user_management.js' %}"></script>
+</body>
+</html>

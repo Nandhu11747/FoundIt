@@ -9,6 +9,8 @@
     <title>Report Lost Item | FoundIt</title>
 
     <link rel="stylesheet" href="{% static 'css/report.css' %}" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
   </head>
 
   <body>
@@ -246,16 +248,37 @@
               <p>Tell us where and when you last had the item.</p>
             </div>
 
+            
             <div class="form-group">
-              <label for="location"> Where did you lose it? </label>
+                <label for="location">Where did you lose it?</label>
 
-              <input
-                type="text"
-                id="location"
-                placeholder="e.g. College Cafeteria"
-                required
-              />
+                <div class="location-actions">
+                    <button type="button" id="useCurrentLocationBtn">
+                        ◎ Use My Current Location
+                    </button>
+                    <span>or select a location on the map</span>
+                </div>
+
+                <div id="locationMap" class="location-map"></div>
+
+                <p id="locationStatus" class="location-status" aria-live="polite">
+                    Choose a point on the map or use your current location.
+                </p>
+
+                <!-- Keep this ID for your existing JavaScript -->
+                <input
+                    type="text"
+                    id="location"
+                    placeholder="Selected location will appear here"
+                    readonly
+                    required
+                />
+
+                <!-- Coordinates selected by GPS or map -->
+                <input type="hidden" id="latitude" />
+                <input type="hidden" id="longitude" />
             </div>
+
 
             <div class="form-row">
               <div class="form-group">
@@ -496,8 +519,9 @@
         </section>
       </main>
     </div>
-
+    
     <script src="{% static 'js/auth.js' %}"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="{% static 'js/report_lost.js' %}"></script>
   </body>
 </html>
