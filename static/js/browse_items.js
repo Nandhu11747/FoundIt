@@ -6,6 +6,28 @@ let filteredItems = [];
 let currentPage = 1;
 const itemsPerPage = 9;
 let currentView = "grid";
+let userLatitude = null;
+let userLongitude = null;
+
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const toRadians = degrees => degrees * Math.PI / 180;
+    const earthRadiusKm = 6371;
+
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) ** 2;
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return earthRadiusKm * c;
+}
+
 
 async function loadBrowseItems() {
 
@@ -45,6 +67,55 @@ async function loadBrowseItems() {
 }
 
 function setupBrowseControls() {
+    
+    
+    const distanceSlider = document.getElementById("distanceSlider");
+    const distanceValue = document.getElementById("distanceValue");
+    const useMyLocationBtn = document.getElementById("useMyLocation");
+    const locationStatus = document.getElementById("locationStatus");
+
+    distanceSlider.addEventListener("input", () => {
+        distanceValue.textContent = `${distanceSlider.value} km`;
+    });
+
+    useMyLocationBtn.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+            locationStatus.textContent =
+                "Your browser does not support location access.";
+            return;
+        }
+
+        locationStatus.textContent = "Getting your location...";
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLatitude = position.coords.latitude;
+                userLongitude = position.coords.longitude;
+
+                locationStatus.textContent =
+                    "Location detected. Applying distance filter...";
+
+                applyFilters();
+            },
+            (error) => {
+                if (error.code === error.PERMISSION_DENIED) {
+                    locationStatus.textContent =
+                        "Location permission denied. Please allow access in your browser.";
+                } else {
+                    locationStatus.textContent =
+                        "Unable to get your location. Please try again.";
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 60000
+            }
+        );
+    });
+
+
+
     document.getElementById("itemSearch").addEventListener(
         "input",
         applyFilters
@@ -63,20 +134,40 @@ function setupBrowseControls() {
         applyFilters
     );
 
+    
     document.getElementById("resetFilters").addEventListener("click", () => {
+        // Reset search
         document.getElementById("itemSearch").value = "";
 
+        // Reset category filters
         document.querySelectorAll(".category-filter").forEach(input => {
             input.checked = false;
         });
 
+        // Reset status filters to Lost and Found
         document.querySelectorAll(".status-filter").forEach(input => {
             input.checked = true;
         });
 
-        document.getElementById("dateFilter").value = "all";
+        // Reset date filter
+        document.getElementById("dateFilter").value = "30";
+
+        // Reset distance slider
+        document.getElementById("distanceSlider").value = 10;
+        document.getElementById("distanceValue").textContent = "10 km";
+
+        // Clear the saved GPS location
+        userLatitude = null;
+        userLongitude = null;
+
+        // Reset location status
+        document.getElementById("locationStatus").textContent =
+            "Enable location to filter nearby items.";
+
+        // Apply all reset filters
         applyFilters();
     });
+
 
     document.getElementById("gridViewBtn").addEventListener("click", () => {
         currentView = "grid";
@@ -123,6 +214,13 @@ function applyFilters() {
 
     const dateRange = document.getElementById("dateFilter").value;
 
+    const maxDistance = Number(
+    document.getElementById("distanceSlider").value
+    );
+
+    const hasUserLocation =
+        userLatitude !== null && userLongitude !== null;
+
     const now = new Date();
     const cutoff = dateRange === "all"
         ? null
@@ -156,11 +254,30 @@ function applyFilters() {
             !cutoff ||
             (reportDate && !Number.isNaN(reportDate.getTime()) &&
                 reportDate >= cutoff);
+        
+        const hasReportCoordinates =
+            item.latitude !== null &&
+            item.latitude !== undefined &&
+            item.longitude !== null &&
+            item.longitude !== undefined;
+
+        const matchesDistance =
+            !hasUserLocation ||
+            (
+                hasReportCoordinates &&
+                calculateDistance(
+                    userLatitude,
+                    userLongitude,
+                    Number(item.latitude),
+                    Number(item.longitude)
+                ) <= maxDistance
+            );
 
         return matchesSearch &&
             matchesCategory &&
             matchesStatus &&
-            matchesDate;
+            matchesDate&&
+            matchesDistance;
     });
 
     currentPage = 1;

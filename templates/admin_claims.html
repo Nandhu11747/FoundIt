@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Claims | FoundIt Admin</title>
+
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin_reports.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin_claims.css' %}">
+</head>
+<body>
+<div class="dashboard-layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-label">MENU</p>
+
+            <a href="/admin-dashboard/" class="nav-item">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/admin-dashboard/users/" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>User Management</span>
+            </a>
+
+            <a href="/admin-dashboard/claims/" class="nav-item active">
+                <span class="nav-icon">♧</span>
+                <span>Claims</span>
+            </a>
+
+            <a href="/admin-dashboard/reports/" class="nav-item">
+                <span class="nav-icon">⌕</span>
+                <span>Reports</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item nav-item_logout" id="adminLogoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="breadcrumb">
+                <a href="/admin-dashboard/">Dashboard</a>
+                <span class="breadcrumb-arrow">›</span>
+                <strong>All Claims</strong>
+            </div>
+        </header>
+
+        <section class="claims-page">
+            <div class="claims-heading">
+                <div>
+                    <h1>All Claims</h1>
+                    <p>Review and manage claims submitted by users.</p>
+                </div>
+
+                <button type="button" id="refreshClaimsBtn">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="claims-summary">
+                <div class="claim-summary-card">
+                    <span>Total Claims</span>
+                    <strong id="totalClaims">0</strong>
+                </div>
+
+                <div class="claim-summary-card">
+                    <span>Pending</span>
+                    <strong id="pendingClaims">0</strong>
+                </div>
+
+                <div class="claim-summary-card">
+                    <span>Approved</span>
+                    <strong id="approvedClaims">0</strong>
+                </div>
+
+                <div class="claim-summary-card">
+                    <span>Rejected</span>
+                    <strong id="rejectedClaims">0</strong>
+                </div>
+            </div>
+
+            <div class="claims-toolbar">
+                <input
+                    type="search"
+                    id="claimSearch"
+                    placeholder="Search by claim ID, item, or claimant..."
+                    aria-label="Search claims"
+                >
+
+                <select id="claimStatusFilter" aria-label="Filter claims by status">
+                    <option value="all">All statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+
+            <p id="claimsMessage" role="status">Loading claims...</p>
+
+            <div class="claims-table-wrapper">
+                <table class="claims-table">
+                    <thead>
+                        <tr>
+                            <th>Claim ID</th>
+                            <th>Item</th>
+                            <th>Claimant</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="claimsTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="claims-pagination">
+                <span id="claimsPageSummary">Showing 0 claims</span>
+
+                <div>
+                    <button type="button" id="claimsPrevPage" disabled>
+                        Previous
+                    </button>
+
+                    <span id="claimsPageInfo">Page 0 of 0</span>
+
+                    <button type="button" id="claimsNextPage" disabled>
+                        Next
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/admin_claims.js' %}"></script>
+</body>
+</html>

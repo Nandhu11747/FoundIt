@@ -11,8 +11,8 @@ from rest_framework import status
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
-from .serializers import RegisterSerializer, LoginSerializer
+from .models import User, PushSubscription
+from .serializers import RegisterSerializer, LoginSerializer, ProfileUpdateSerializer
 from .utils import generate_otp
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import redirect
@@ -427,5 +427,71 @@ class AdminUserStatusView(APIView):
                 "status": target_user.status,
             },
             status=status.HTTP_200_OK
+        )
+
+
+class ProfileUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request):
+        serializer = ProfileUpdateSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(
+                {
+                    "message": "Profile updated successfully.",
+                    "user": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class SavePushSubscriptionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        subscription = request.data.get("subscription")
+
+        if not subscription:
+            return Response(
+                {"error": "Subscription data is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        endpoint = subscription.get("endpoint")
+        keys = subscription.get("keys", {})
+
+        p256dh = keys.get("p256dh")
+        auth = keys.get("auth")
+
+        if not endpoint or not p256dh or not auth:
+            return Response(
+                {"error": "Invalid push subscription data."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        PushSubscription.objects.update_or_create(
+            endpoint=endpoint,
+            defaults={
+                "user": request.user,
+                "p256dh": p256dh,
+                "auth": auth,
+            }
+        )
+
+        return Response(
+            {"message": "Push subscription saved successfully."},
+            status=status.HTTP_201_CREATED
         )
 

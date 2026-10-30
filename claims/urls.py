@@ -8,6 +8,7 @@ from .views import ( CreateClaimView,
                     ApproveClaimView,
                     RejectClaimView,
                     MyClaimsView,
+                    AdminAllClaimsView,
 )
 
 urlpatterns = [
@@ -35,6 +36,13 @@ urlpatterns = [
         AdminPendingClaimsView.as_view(),
         name="admin-pending-claims"
     ),
+
+    path(
+        "admin/all/",
+        AdminAllClaimsView.as_view(),
+        name="admin-all-claims",
+    ),
+
     path(
         "admin/<int:claim_id>/",
         AdminClaimVerificationView.as_view(),

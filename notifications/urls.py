@@ -1,5 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
+from django.conf import settings
 
 from .views import (
     NotificationListView,
@@ -21,7 +22,12 @@ urlpatterns = [
     ),
     path(
         "page/",
-        TemplateView.as_view(template_name="notifications.html"),
+        TemplateView.as_view(
+            template_name="notifications.html",
+            extra_context={
+                "vapid_public_key": settings.VAPID_PUBLIC_KEY,
+            },
+        ),
         name="notifications-page",
     ),
 ]

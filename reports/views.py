@@ -1,3 +1,7 @@
+
+from django.db.models import Q
+from rest_framework.pagination import PageNumberPagination
+from django.db import connection
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -11,7 +15,8 @@ from .matching import (
 )
 from django.db.models import Exists, OuterRef
 from claims.models import Claim
-
+from rest_framework.permissions import IsAdminUser
+from django.db import connection
 
 
 class CreateReportView(APIView):
@@ -130,7 +135,7 @@ class BrowseItemsView(APIView):
         data = []
 
         for report in reports:
-            image = report.images.first()
+            image = next(iter(report.images.all()), None)
 
             image_url = None
             if image:
@@ -148,12 +153,14 @@ class BrowseItemsView(APIView):
                 "color": report.color,
                 "condition": report.condition,
                 "location": report.location,
+                "latitude": report.latitude,
+                "longitude": report.longitude,
                 "event_date": report.event_date,
                 "created_at": report.created_at,
                 "image_url": image_url,
-                "tags": list(
-                    report.tags.values_list("tag", flat=True)
-                ),
+                "tags": [
+                    tag.tag for tag in report.tags.all()
+                ],
                 "submitted_by": (
                     (report.user.full_name or "").strip()
                     or getattr(report.user, "email", None)
@@ -165,6 +172,87 @@ class BrowseItemsView(APIView):
             data,
             status=status.HTTP_200_OK
         )
+
+
+class AdminReportsView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+
+        reports = Report.objects.select_related(
+            "user"
+        ).prefetch_related(
+            "images"
+        ).order_by("-created_at")
+
+        # Filter by report type
+        report_type = request.query_params.get("type")
+
+        if report_type in ["lost", "found"]:
+            reports = reports.filter(type=report_type)
+
+        # Search reports
+        search = request.query_params.get("search", "").strip()
+
+        if search:
+            search_filter = (
+                Q(item_name__icontains=search) |
+                Q(category__icontains=search) |
+                Q(location__icontains=search) |
+                Q(status__icontains=search) |
+                Q(user__full_name__icontains=search) |
+                Q(user__email__icontains=search)
+            )
+
+            if search.isdigit():
+                search_filter |= Q(id=int(search))
+
+            reports = reports.filter(search_filter)
+
+        # Apply pagination
+        paginator = PageNumberPagination()
+        paginator.page_size = 8
+
+        page = paginator.paginate_queryset(
+            reports,
+            request,
+            view=self
+        )
+
+        data = []
+
+        for report in page:
+
+            image = next(iter(report.images.all()), None)
+
+            image_url = None
+
+            if image:
+                image_url = request.build_absolute_uri(
+                    image.image_url.url
+                )
+
+            data.append({
+                "id": report.id,
+                "item_name": report.item_name,
+                "type": report.type,
+                "category": report.category,
+                "description": report.description,
+                "location": report.location,
+                "event_date": report.event_date,
+                "status": report.status,
+                "created_at": report.created_at,
+                "image_url": image_url,
+                "submitted_by": (
+                    (
+                        (report.user.full_name or "").strip()
+                        or getattr(report.user, "email", None)
+                        or "Unknown user"
+                    ) if report.user else "Unknown user"
+                ),
+            })
+
+        return paginator.get_paginated_response(data)
 
 class MyMatchesView(APIView):
     permission_classes = [IsAuthenticated]
@@ -235,3 +323,4 @@ class FoundReportMatchesView(APIView):
             })
 
         return Response(data, status=status.HTTP_200_OK)
+

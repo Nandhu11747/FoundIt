@@ -66,3 +66,26 @@ class LoginSerializer(serializers.Serializer):
         data["user"] = user
 
         return data
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "full_name",
+            "phone",
+            "location",
+        ]
+
+    def validate_phone(self, value):
+        user = self.instance
+
+        if User.objects.filter(phone=value).exclude(
+            id=user.id
+        ).exists():
+            raise serializers.ValidationError(
+                "This phone number is already registered."
+            )
+
+        return value

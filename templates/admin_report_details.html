@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Report Details | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin_report_details.css' %}">
+</head>
+<body>
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-label">MENU</p>
+
+            <a href="/admin-dashboard/" class="nav-item">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/admin-dashboard/users/" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>User Management</span>
+            </a>
+
+            <a href="/admin-dashboard/claims/" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>Claims</span>
+            </a>
+
+            <a href="/admin-dashboard/reports/" class="nav-item active">
+                <span class="nav-icon">⌕</span>
+                <span>Reports</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item nav-item_logout" id="adminLogoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="breadcrumb">
+                <a href="/admin-dashboard/">Dashboard</a>
+                <span class="breadcrumb-arrow">›</span>
+                <a href="/admin-dashboard/reports/">Reports</a>
+                <span class="breadcrumb-arrow">›</span>
+                <strong>Report Details</strong>
+            </div>
+        </header>
+
+        <section class="admin-report-page">
+            <a class="back-link" href="/admin-dashboard/reports/">
+                ← Back to All Reports
+            </a>
+
+            <h1>Report Details</h1>
+            <p class="page-description">
+                Review the information submitted with this report.
+            </p>
+
+            <p id="reportLoading">Loading report details...</p>
+
+            <p id="reportError" role="alert" hidden>
+                Unable to load this report. Check your admin access or try again.
+            </p>
+
+            <section id="reportDetails" hidden>
+                <div class="admin-report-card">
+                    <div class="admin-report-image">
+                        <img id="reportImage" alt="Reported item" hidden>
+                        <div id="reportImagePlaceholder">
+                            No image available
+                        </div>
+                    </div>
+
+                    <div class="admin-report-info">
+                        <div class="report-labels">
+                            <span id="reportType" class="report-type-badge"></span>
+                            <span id="reportStatus" class="report-status-badge"></span>
+                        </div>
+
+                        <p id="reportId" class="report-id"></p>
+                        <h2 id="reportName"></h2>
+                        <p id="reportDescription"></p>
+
+                        <div class="report-detail-grid">
+                            <div>
+                                <span>Category</span>
+                                <strong id="reportCategory"></strong>
+                            </div>
+
+                            <div>
+                                <span>Brand</span>
+                                <strong id="reportBrand"></strong>
+                            </div>
+
+                            <div>
+                                <span>Color</span>
+                                <strong id="reportColor"></strong>
+                            </div>
+
+                            <div>
+                                <span>Condition</span>
+                                <strong id="reportCondition"></strong>
+                            </div>
+
+                            <div>
+                                <span>Location</span>
+                                <strong id="reportLocation"></strong>
+                            </div>
+
+                            <div>
+                                <span>Event date</span>
+                                <strong id="reportEventDate"></strong>
+                            </div>
+
+                            <div>
+                                <span>Submitted by</span>
+                                <strong id="reportSubmittedBy"></strong>
+                            </div>
+
+                            <div>
+                                <span>Submitted on</span>
+                                <strong id="reportCreatedAt"></strong>
+                            </div>
+                        </div>
+
+                        <div class="report-tags-section">
+                            <span>Tags</span>
+                            <div id="reportTags" class="report-tags"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/admin_report_details.js' %}"></script>
+</body>
+</html>

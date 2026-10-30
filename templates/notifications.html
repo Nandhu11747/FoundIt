@@ -43,7 +43,7 @@
                 <span>Notification</span>
             </a>
 
-            <a href="#" class="nav-item">
+            <a href="/profile/" class="nav-item">
                 <span class="nav-icon">◎</span>
                 <span>Profile</span>
             </a>
@@ -96,14 +96,22 @@
                     </p>
                 </div>
 
+                
                 <div class="notification-actions">
+                    <button type="button" id="enableBrowserNotificationsBtn"
+                            class="notification-btn dark-btn">
+                        🔔 &nbsp; Enable Browser Notifications
+                    </button>
+
                     <button type="button" id="markAllReadBtn" class="notification-btn dark-btn">
                         ✓ &nbsp; Mark All Read
                     </button>
+
                     <button type="button" id="clearAllBtn" class="notification-btn red-btn">
                         ▣ &nbsp; Clear All
                     </button>
                 </div>
+
             </section>
 
             <!-- NOTIFICATION CONTENT -->
@@ -131,6 +139,9 @@
 </div>
 
 <script src="{% static 'js/auth.js' %}"></script>
+<script>
+    window.VAPID_PUBLIC_KEY = "{{ vapid_public_key|escapejs }}";
+</script>
 <script src="{% static 'js/notifications.js' %}"></script>
 </body>
 </html>

@@ -1,0 +1,211 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | FoundIt</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">⌕</div>
+            <span>FoundIt</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-label">MENU</p>
+
+            <a href="/dashboard/" class="nav-item">
+                <span class="nav-icon">⊞</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/reports/browse/page/" class="nav-item">
+                <span class="nav-icon">⌕</span>
+                <span>Browse Items</span>
+            </a>
+
+            <a href="/claims/page/my/" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>My Claims</span>
+            </a>
+
+            <a href="/notifications/page/" class="nav-item">
+                <span class="nav-icon">♧</span>
+                <span>Notifications</span>
+            </a>
+
+            <a href="/profile/" class="nav-item active">
+                <span class="nav-icon">◎</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+
+            <a href="#" class="nav-item nav-item_logout" id="logoutBtn">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+
+        <header class="top-header">
+            <div class="breadcrumb">
+                <a href="/dashboard/">Dashboard</a>
+                <span class="breadcrumb-arrow">›</span>
+                <strong>Profile</strong>
+            </div>
+
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <strong id="userName">Loading...</strong>
+                        <span>Account Profile</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content profile-page">
+
+            <!-- Profile overview -->
+            <section class="profile-hero">
+                <div class="profile-avatar" id="profileAvatar">U</div>
+
+                <div class="profile-summary">
+                    <h1 id="profileName">Loading profile...</h1>
+                    <p id="profileEmail">Loading email...</p>
+                    <span class="profile-status">FoundIt Member</span>
+                </div>
+
+                <button type="button" id="editProfileBtn" class="primary-btn">
+                    Edit Profile
+                </button>
+            </section>
+
+            <!-- Reports and claims summary -->
+            <section class="profile-stats">
+                <article class="profile-stat-card">
+                    <span class="stat-icon">▤</span>
+                    <p>My Reports</p>
+                    <h2 id="reportCount">—</h2>
+                    <span>Items you have reported</span>
+                </article>
+
+                <article class="profile-stat-card">
+                    <span class="stat-icon">♧</span>
+                    <p>My Claims</p>
+                    <h2 id="claimCount">—</h2>
+                    <span>Claims you have submitted</span>
+                </article>
+            </section>
+
+            <!-- Personal information -->
+            <section class="profile-details-card">
+                <div class="profile-section-heading">
+                    <div>
+                        <h2>Personal Information</h2>
+                        <p>View and manage your account details.</p>
+                    </div>
+                </div>
+
+                <form id="profileForm">
+                    <div class="profile-form-grid">
+
+                        <div class="profile-field">
+                            <label for="fullName">Full name</label>
+                            <input
+                                type="text"
+                                id="fullName"
+                                name="full_name"
+                                placeholder="Your full name"
+                                required
+                                disabled
+                            >
+                        </div>
+
+                        <div class="profile-field">
+                            <label for="email">Email address</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Your email"
+                                readonly
+                            >
+                        </div>
+
+                        <div class="profile-field">
+                            <label for="phone">Phone number</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Your phone number"
+                                required
+                                disabled
+                            >
+                        </div>
+
+                        <div class="profile-field">
+                            <label for="location">Location</label>
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                placeholder="Your location"
+                                disabled
+                            >
+                        </div>
+
+                    </div>
+
+                    <p id="profileMessage" role="status" hidden></p>
+
+                    <div class="profile-form-actions">
+                        <button
+                            type="button"
+                            id="cancelEditBtn"
+                            class="secondary-btn"
+                            hidden
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            id="saveProfileBtn"
+                            class="primary-btn"
+                            hidden
+                        >
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+</body>
+</html>

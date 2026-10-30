@@ -21,7 +21,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users.views import (AdminDashboardView,AdminDashboardStatsView,)
 
+from django.http import FileResponse
+from django.conf import settings
+from pathlib import Path
 
+def service_worker(request):
+    file_path = (
+        Path(settings.BASE_DIR)
+        / "static"
+        / "js"
+        / "service-worker.js"
+    )
+
+    return FileResponse(
+        open(file_path, "rb"),
+        content_type="application/javascript"
+    )
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -75,6 +90,40 @@ urlpatterns = [
         name="admin-user-management"
     ),
 
+    path(
+        "admin-dashboard/reports/",
+        TemplateView.as_view(
+            template_name="admin_reports.html"
+        ),
+        name="admin-reports"
+    ),
+
+    path(
+        "admin-dashboard/claims/",
+        TemplateView.as_view(template_name="admin_claims.html"),
+        name="admin-claims",
+    ),
+
+    path(
+        "admin-dashboard/reports/<int:report_id>/",
+        TemplateView.as_view(
+            template_name="admin_report_details.html"
+        ),
+        name="admin-report-details",
+    ),
+
+    path(
+        "profile/",
+        TemplateView.as_view(template_name="profile.html"),
+        name="profile",
+    ),
+
+    path(
+        "service-worker.js",
+        service_worker,
+        name="service_worker"
+    ),
+
     path("auth/", include("users.urls")),
     path("accounts/", include("allauth.urls")),
 
@@ -93,3 +142,10 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT
     )
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]

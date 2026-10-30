@@ -1,0 +1,224 @@
+
+/* ===== Admin Reports Page ===== */
+
+.reports-panel {
+    padding: 22px;
+    background: #fff;
+    border: 1px solid #e8eaef;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgb(20 30 50 / 3%);
+}
+
+.report-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.report-type-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.report-filter {
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 5px;
+    background: #f1f3f6;
+    color: #626b7b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.report-filter.active {
+    background: #20232c;
+    color: #fff;
+}
+
+.report-filter.lost-filter {
+    background: #ffeadb;
+    color: #b45309;
+}
+
+.report-filter.lost-filter.active {
+    background: #f08b62;
+    color: #fff;
+}
+
+.report-filter.found-filter {
+    background: #dff7e8;
+    color: #167443;
+}
+
+.report-filter.found-filter.active {
+    background: #20c5a7;
+    color: #fff;
+}
+
+.report-search {
+    width: min(260px, 100%);
+    padding: 10px 12px;
+    border: 1px solid #e0e3e9;
+    border-radius: 7px;
+    outline: none;
+    font-size: 12px;
+}
+
+.report-search:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgb(13 148 136 / 10%);
+}
+
+.reports-message {
+    margin: 0 0 14px;
+    color: #737987;
+    font-size: 12px;
+}
+
+.reports-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #edf0f4;
+    border-radius: 7px;
+}
+
+.reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 12px;
+}
+
+.reports-table th {
+    padding: 15px 12px;
+    background: #fafbfc;
+    color: #454b58;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.reports-table td {
+    padding: 15px 12px;
+    border-top: 1px solid #f0f1f4;
+    color: #515866;
+    vertical-align: middle;
+}
+
+.reports-table tbody tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+.reports-table tbody tr:hover {
+    background: #f0fdfa;
+}
+
+.report-id {
+    color: #777e8c;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.report-type-badge,
+.report-status-badge {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.report-type-badge.lost {
+    background: #ffeadb;
+    color: #b45309;
+}
+
+.report-type-badge.found {
+    background: #dff7e8;
+    color: #167443;
+}
+
+.report-status-badge {
+    background: #eef2f7;
+    color: #596273;
+}
+
+.report-action-btn {
+    padding: 6px 10px;
+    border: 1px solid #e0e3e9;
+    border-radius: 5px;
+    background: #fff;
+    color: #333947;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.report-action-btn:hover {
+    border-color: #0d9488;
+    color: #0d9488;
+}
+
+.reports-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 22px;
+    color: #737987;
+    font-size: 11px;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-controls button {
+    padding: 8px 12px;
+    border: 1px solid #e0e3e9;
+    border-radius: 5px;
+    background: #fff;
+    color: #333947;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.pagination-controls button:not(:disabled):hover {
+    background: #20232c;
+    border-color: #20232c;
+    color: #fff;
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .reports-panel {
+        padding: 14px;
+    }
+
+    .report-toolbar {
+        align-items: stretch;
+    }
+
+    .report-search {
+        width: 100%;
+    }
+
+    .reports-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

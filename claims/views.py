@@ -1,3 +1,4 @@
+from django.db import connection
 from notifications.models import Notification
 from urllib import request
 from rest_framework.views import APIView
@@ -9,6 +10,8 @@ from .models import Claim, ClaimEvidence,ClaimVerification
 from reports.models import Report, Match
 from django.utils import timezone
 from django.db import transaction
+from notifications.push import send_push_notification
+from django.db.models import Count
 
 class CreateClaimView(APIView):
 
@@ -238,19 +241,19 @@ class AdminPendingClaimsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+    
         if not request.user.is_superuser:
             return Response(
                 {"error": "Admin access required."},
                 status=status.HTTP_403_FORBIDDEN
             )
-
         claims = Claim.objects.filter(
             status="pending"
         ).select_related(
             "report",
             "claimant"
-        ).prefetch_related(
-            "evidence"
+        ).annotate(
+            evidence_count=Count("evidence")
         ).order_by("-created_at")
 
         data = []
@@ -269,8 +272,10 @@ class AdminPendingClaimsView(APIView):
                 "unique_identification_details": claim.unique_identification_details,
                 "status": claim.status,
                 "created_at": claim.created_at,
-                "evidence_count": claim.evidence.count(),
+                "evidence_count": claim.evidence_count,
             })
+
+        
 
         return Response(
             data,
@@ -281,6 +286,8 @@ class AdminClaimVerificationView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, claim_id):
+        start_queries = len(connection.queries)
+        
 
         # Only superusers can access claim verification
         if not request.user.is_superuser:
@@ -292,9 +299,18 @@ class AdminClaimVerificationView(APIView):
         try:
             claim = Claim.objects.select_related(
                 "claimant",
-                "report"
+                "report",
+                "match",
+                "match__found_report",
+                "verification"
+            ).prefetch_related(
+                "evidence",
+                "report__images",
+                "report__tags",
+                "match__found_report__images",
+                "match__found_report__tags"
             ).get(id=claim_id)
-
+    
         except Claim.DoesNotExist:
             return Response(
                 {"error": "Claim not found."},
@@ -332,7 +348,7 @@ class AdminClaimVerificationView(APIView):
             })
 
         # Get found report image
-        found_image = found_report.images.first()
+        found_image = next(iter(found_report.images.all()), None)
 
         found_image_url = None
 
@@ -342,8 +358,7 @@ class AdminClaimVerificationView(APIView):
             )
 
         # Get lost report image
-        lost_image = lost_report.images.first()
-
+        lost_image = next(iter(lost_report.images.all()), None)
         lost_image_url = None
 
         if lost_image:
@@ -351,6 +366,14 @@ class AdminClaimVerificationView(APIView):
                 lost_image.image_url.url
             )
 
+        query_count = len(connection.queries) - start_queries
+        
+        print(f"AdminClaimVerificationView SQL Query Count: {query_count}")
+        
+        for query in connection.queries[start_queries:]:
+            print(query["sql"])
+            print("Execution time:", query["time"], "seconds")
+        
         return Response(
             {
                 "claim": {
@@ -486,6 +509,13 @@ class ApproveClaimView(APIView):
             related_url="/claims/page/my/",
         )
 
+        send_push_notification(
+            user=claim.claimant,
+            title="Claim Approved",
+            body=f"Your claim #{claim.id} has been approved.",
+            url="/claims/page/my/",
+        )
+
         match = claim.match
 
         if match:
@@ -551,6 +581,13 @@ class RejectClaimView(APIView):
             related_url="/claims/page/my/",
         )
 
+        send_push_notification(
+            user=claim.claimant,
+            title="Claim Rejected",
+            body=f"Your claim #{claim.id} has been rejected.",
+            url="/claims/page/my/",
+        )
+
         return Response(
             {
                 "message": "Claim rejected successfully.",
@@ -560,3 +597,38 @@ class RejectClaimView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+class AdminAllClaimsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not request.user.is_superuser:
+            return Response(
+                {"error": "Admin access required."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        claims = Claim.objects.select_related(
+            "report",
+            "claimant",
+            "match"
+        ).order_by("-created_at")
+
+        data = []
+
+        for claim in claims:
+            data.append({
+                "claim_id": claim.id,
+                "report_id": claim.report_id,
+                "claimant_id": claim.claimant_id,
+                "claimant_name": claim.claimant.full_name,
+                "claimant_email": claim.claimant.email,
+                "item_name": claim.report.item_name,
+                "category": claim.report.category,
+                "location": claim.report.location,
+                "status": claim.status,
+                "created_at": claim.created_at,
+            })
+
+        return Response(data, status=status.HTTP_200_OK)

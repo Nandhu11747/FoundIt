@@ -6,6 +6,7 @@ from .views import (
     MyMatchesView,
     BrowseItemsView,
     FoundReportMatchesView,
+    AdminReportsView
 )
 from django.views.generic import TemplateView
 
@@ -57,6 +58,13 @@ urlpatterns = [
         TemplateView.as_view(template_name="browse_items.html"),
         name="browse-items-page",
     ),
+
+    path(
+        "admin/all/",
+        AdminReportsView.as_view(),
+        name="admin-all-reports",
+    ),
+
     path(
         "item/<int:report_id>/",
         TemplateView.as_view(

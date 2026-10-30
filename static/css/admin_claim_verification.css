@@ -624,6 +624,15 @@ body {
 }
 
 
+.match-actions[hidden] {
+    display: none !important;
+}
+
+#claimAlreadyReviewed[hidden] {
+    display: none !important;
+}
+
+
 
 
 /* =========================================================

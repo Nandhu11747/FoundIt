@@ -17,7 +17,66 @@ document.addEventListener("DOMContentLoaded", () => {
     const markAllReadBtn = document.getElementById("markAllReadBtn");
     const clearAllBtn = document.getElementById("clearAllBtn");
 
+    
+    const enableBrowserNotificationsBtn = document.getElementById(
+        "enableBrowserNotificationsBtn"
+    );
+
+    function updateBrowserNotificationButton() {
+        if (!("Notification" in window)) {
+            enableBrowserNotificationsBtn.textContent =
+                "Browser Notifications Not Supported";
+            enableBrowserNotificationsBtn.disabled = true;
+            return;
+        }
+
+        if (Notification.permission === "granted") {
+            enableBrowserNotificationsBtn.textContent =
+                "✓ Browser Notifications Enabled";
+            enableBrowserNotificationsBtn.disabled = true;
+        } else if (Notification.permission === "denied") {
+            enableBrowserNotificationsBtn.textContent =
+                "Notifications Blocked — Check Browser Settings";
+            enableBrowserNotificationsBtn.disabled = true;
+        } else {
+            enableBrowserNotificationsBtn.textContent =
+                "🔔 Enable Browser Notifications";
+            enableBrowserNotificationsBtn.disabled = false;
+        }
+    }
+
+    enableBrowserNotificationsBtn.addEventListener("click", async () => {
+        if (!("Notification" in window)) {
+            alert("Your browser does not support notifications.");
+            return;
+        }
+
+        try {
+            const permission = await Notification.requestPermission();
+
+            updateBrowserNotificationButton();
+
+            if (permission === "granted") {
+                new Notification("FoundIt", {
+                    body: "Browser notifications are now enabled!"
+                });
+            } else if (permission === "denied") {
+                alert(
+                    "Notifications are blocked. Please allow them in your browser's site settings."
+                );
+            }
+        } catch (error) {
+            console.error("Notification permission request failed:", error);
+            alert("Could not enable browser notifications.");
+        }
+    });
+
+    updateBrowserNotificationButton();
+
+
     let notifications = [];
+    let knownNotificationIds = new Set();
+    let hasLoadedNotificationsOnce = false;
 
     function escapeHTML(value) {
         return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -139,12 +198,71 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(`Unable to load notifications (${response.status})`);
             }
 
+            
             const data = await response.json();
-            notifications = Array.isArray(data.notifications)
+
+            const latestNotifications = Array.isArray(data.notifications)
                 ? data.notifications
                 : [];
 
+            // First load: record existing notifications without alerting for old ones.
+           // if (!hasLoadedNotificationsOnce) {
+             //   latestNotifications.forEach(item => {
+               //     knownNotificationIds.add(Number(item.id));
+                //});
+
+                //hasLoadedNotificationsOnce = true;
+            //} 
+            if (!hasLoadedNotificationsOnce) {
+                latestNotifications.forEach(item => {
+                    knownNotificationIds.add(Number(item.id));
+                });
+
+                hasLoadedNotificationsOnce = true;
+            } else {
+                // Keep the rest of your existing else block unchanged.
+                // Later loads: notify only about newly created approval/rejection alerts.
+                latestNotifications.forEach(item => {
+                    const id = Number(item.id);
+
+                    if (!knownNotificationIds.has(id)) {
+                        knownNotificationIds.add(id);
+
+                        if (
+                            Notification.permission === "granted" &&
+                            ["claim_approved", "claim_rejected"].includes(
+                                item.notification_type
+                            )
+                        ) {
+                            const browserNotification = new Notification(
+                                item.title || "FoundIt Update",
+                                {
+                                    body: item.message || "Your claim status has changed.",
+                                    tag: `foundit-notification-${id}`
+                                }
+                            );
+
+                            browserNotification.onclick = () => {
+                                window.focus();
+
+                                const url = item.related_url || "/claims/page/my/";
+
+                                if (url.startsWith("/") &&
+                                    !url.startsWith("//") &&
+                                    !url.includes("\\")) {
+                                    window.location.href = url;
+                                }
+
+                                browserNotification.close();
+                            };
+                        }
+                    }
+                });
+            }
+
+            notifications = latestNotifications;
             renderNotifications();
+
         } catch (error) {
             console.error("Notification loading failed:", error);
             notificationList.innerHTML = `
@@ -221,4 +339,90 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadNotifications();
+
+    setInterval(loadNotifications, 10000);
 });
+
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - base64String.length % 4) % 4);
+
+    const base64 = (base64String + padding)
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+    const rawData = atob(base64);
+
+    return Uint8Array.from(
+        [...rawData].map(char => char.charCodeAt(0))
+    );
+}
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+        try {
+            const registration =
+                await navigator.serviceWorker.register(
+                    "/service-worker.js"
+                );
+
+            console.log(
+                "Service worker registered:",
+                registration.scope
+            );
+
+            if (Notification.permission !== "granted") {
+                console.log(
+                    "Enable browser notifications before subscribing."
+                );
+                return;
+            }
+
+            const publicKey = window.VAPID_PUBLIC_KEY;
+
+            if (!publicKey) {
+                console.error("VAPID public key is missing.");
+                return;
+            }
+
+            let subscription =
+                await registration.pushManager.getSubscription();
+
+            if (!subscription) {
+                subscription =
+                    await registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey:
+                            urlBase64ToUint8Array(publicKey)
+                    });
+            }
+
+            const response = await authenticatedFetch(
+                "/auth/push/subscribe/",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        subscription: subscription.toJSON()
+                    })
+                }
+            );
+
+            if (response && response.ok) {
+                console.log("Push subscription saved successfully.");
+            } else {
+                console.error(
+                    "Failed to save push subscription:",
+                    response?.status
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Push subscription setup failed:",
+                error
+            );
+        }
+    });
+}

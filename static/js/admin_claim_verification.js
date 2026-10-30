@@ -78,18 +78,61 @@ function renderClaimData(data) {
         `${match.score}%`;
 
 
+    
     /* =====================================================
-       CLAIM STATUS
-       ===================================================== */
+    CLAIM STATUS AND ACTION BUTTONS
+    ===================================================== */
 
-    const pendingStatus =
-        document.querySelector(".pending-status");
+    const pendingStatus = document.querySelector(".pending-status");
+    const matchActions = document.getElementById("matchActions");
+    const reviewedMessage = document.getElementById("claimAlreadyReviewed");
+    const rejectReasonSection = document.getElementById("rejectReasonSection");
+
+    const currentStatus = String(claim.status || "")
+        .trim()
+        .toLowerCase();
 
     if (pendingStatus) {
+        pendingStatus.textContent = formatStatus(currentStatus);
+    }
 
-        pendingStatus.textContent =
-            formatStatus(claim.status);
+    if (currentStatus === "pending") {
+        if (matchActions) matchActions.hidden = false;
+        if (reviewedMessage) reviewedMessage.hidden = true;
+    } else {
+        if (matchActions) matchActions.hidden = true;
 
+        if (reviewedMessage) {
+            reviewedMessage.hidden = false;
+            reviewedMessage.textContent =
+                `This claim has already been ${formatStatus(currentStatus).toLowerCase()}.`;
+        }
+
+        if (rejectReasonSection) {
+            rejectReasonSection.hidden = true;
+        }
+    }
+
+    const verificationStatus = document.getElementById("verificationStatus");
+
+    if (verificationStatus) {
+        const status = String(claim.status || "").trim().toLowerCase();
+
+        verificationStatus.textContent = formatStatus(status);
+
+        verificationStatus.classList.remove(
+            "status-pending",
+            "status-approved",
+            "status-rejected"
+        );
+
+        if (status === "pending") {
+            verificationStatus.classList.add("status-pending");
+        } else if (status === "approved") {
+            verificationStatus.classList.add("status-approved");
+        } else if (status === "rejected") {
+            verificationStatus.classList.add("status-rejected");
+        }
     }
 
 
@@ -182,21 +225,7 @@ function renderClaimData(data) {
         verification.ownership_proof;
 
 
-    /* =====================================================
-       VERIFICATION STATUS
-       ===================================================== */
-
-    const verificationStatus =
-        document.getElementById("verificationStatus");
-
-    if (verificationStatus) {
-
-        verificationStatus.textContent =
-            formatStatus(
-                verification.verification_status
-            );
-
-    }
+    
 }
 
 
